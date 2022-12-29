@@ -1,1 +1,1 @@
-# Instagram_cloneCoding
+# Instagram-Clone
