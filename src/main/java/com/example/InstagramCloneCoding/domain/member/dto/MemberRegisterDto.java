@@ -6,9 +6,8 @@ import lombok.Setter;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-@Getter
-@Setter
-public class UserRegisterRequestDto {
+@Getter @Setter
+public class MemberRegisterDto {
 
     @NotBlank
     private String userId;
