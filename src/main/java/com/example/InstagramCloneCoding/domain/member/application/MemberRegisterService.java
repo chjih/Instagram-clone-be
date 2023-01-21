@@ -13,6 +13,7 @@ import javax.transaction.Transactional;
 
 @Service
 public class MemberRegisterService {
+
     @Autowired
     private MemberRepository memberRepository;
     @Autowired

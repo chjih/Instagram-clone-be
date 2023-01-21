@@ -14,6 +14,7 @@ import javax.persistence.Table;
 @Getter @Setter
 @NoArgsConstructor
 public class Member {
+
     @Id
     @Column(name = "user_id")
     String userId;
