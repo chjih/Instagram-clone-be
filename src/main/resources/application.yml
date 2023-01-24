@@ -4,3 +4,19 @@ spring:
     username: ${RDS_USERNAME}
     url: ${RDS_URL}
     password: ${RDS_PASSWORD}
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${GOOGLE_USERNAME_FOR_SMTP}
+    password: ${GOOGLE_PASSWORD_FOR_SMTP}
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+            required: true
+          auth: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000

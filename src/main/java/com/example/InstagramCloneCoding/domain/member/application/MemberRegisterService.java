@@ -1,6 +1,7 @@
 package com.example.InstagramCloneCoding.domain.member.application;
 
 import com.example.InstagramCloneCoding.domain.member.dao.MemberRepository;
+import com.example.InstagramCloneCoding.domain.member.domain.EmailConfirmationToken;
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
 import com.example.InstagramCloneCoding.domain.member.dto.MemberRegisterDto;
 import com.example.InstagramCloneCoding.domain.member.error.RegisterErrorCode;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 @Service
+@Transactional
 public class MemberRegisterService {
 
     @Autowired
@@ -19,7 +21,6 @@ public class MemberRegisterService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Transactional
     public Member register(MemberRegisterDto registerDto) {
         // 아이디 중복 확인
         Member member = memberRepository.findById(registerDto.getUserId()).orElse(null);

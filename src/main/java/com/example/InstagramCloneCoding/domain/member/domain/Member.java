@@ -34,9 +34,13 @@ public class Member {
     @Column(name = "introduction")
     String introduction;
 
+    @Column(name = "email_verified", nullable = false)
+    boolean emailVerified;
+
     public Member(String email, String userId, String password) {
         this.email = email;
         this.userId = userId;
         this.password = password;
+        this.emailVerified = false;
     }
 }
