@@ -22,6 +22,6 @@ spring:
           writetimeout: 5000
 
 jwt:
-  secretKey: instagramCloneCodingSecretKey12345
-  access-token-validate-in-seconds: 3600
+  secretKey: ${JWT_SECRET_KEY}
+  access-token-validate-in-seconds: 1800
   refresh-token-validate-in-seconds: 1209600
