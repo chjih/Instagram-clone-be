@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 
-import static com.example.InstagramCloneCoding.domain.member.error.RegisterErrorCode.MEMBER_NOT_FOUND;
-import static com.example.InstagramCloneCoding.domain.member.error.RegisterErrorCode.TOKEN_NOT_FOUND;
+import static com.example.InstagramCloneCoding.domain.member.error.MemberErrorCode.MEMBER_NOT_FOUND;
+import static com.example.InstagramCloneCoding.domain.member.error.MemberErrorCode.TOKEN_NOT_FOUND;
 
 @Service
 @Transactional
@@ -33,7 +33,7 @@ public class EmailConfirmService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(receiverEmail);
         message.setSubject("인스타그램(클론) 회원가입 이메일 인증");
-        message.setText("http://localhost:8080/confirm-email?token=" + token.getId());
+        message.setText("http://localhost:8080/accounts/confirm-email?token=" + token.getId());
         emailSenderService.sendEmail(message);
 
         return token.getId();

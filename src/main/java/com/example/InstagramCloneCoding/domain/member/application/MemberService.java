@@ -1,10 +1,9 @@
 package com.example.InstagramCloneCoding.domain.member.application;
 
 import com.example.InstagramCloneCoding.domain.member.dao.MemberRepository;
-import com.example.InstagramCloneCoding.domain.member.domain.EmailConfirmationToken;
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
 import com.example.InstagramCloneCoding.domain.member.dto.MemberRegisterDto;
-import com.example.InstagramCloneCoding.domain.member.error.RegisterErrorCode;
+import com.example.InstagramCloneCoding.domain.member.error.MemberErrorCode;
 import com.example.InstagramCloneCoding.global.error.RestApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,9 +11,11 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
+import static com.example.InstagramCloneCoding.domain.member.error.MemberErrorCode.MEMBER_NOT_FOUND;
+
 @Service
 @Transactional
-public class MemberRegisterService {
+public class MemberService {
 
     @Autowired
     private MemberRepository memberRepository;
@@ -25,18 +26,18 @@ public class MemberRegisterService {
         // 아이디 중복 확인
         Member member = memberRepository.findById(registerDto.getUserId()).orElse(null);
         if (member != null) {
-            throw new RestApiException(RegisterErrorCode.ID_ALREADY_EXISTS);
+            throw new RestApiException(MemberErrorCode.ID_ALREADY_EXISTS);
         }
 
         // 이메일 중복 확인
         member = memberRepository.findByEmail(registerDto.getEmail()).orElse(null);
         if (member != null) {
-            throw new RestApiException(RegisterErrorCode.EMAIL_ALREADY_REGISTERED);
+            throw new RestApiException(MemberErrorCode.EMAIL_ALREADY_REGISTERED);
         }
 
         // 비밀번호 확인
         if (!registerDto.getPassword().equals(registerDto.getConfirmPassword())) {
-            throw new RestApiException(RegisterErrorCode.WRONG_CONFIRM_PASSWORD);
+            throw new RestApiException(MemberErrorCode.WRONG_CONFIRM_PASSWORD);
         }
 
         // 비밀번호 암호화
@@ -44,6 +45,16 @@ public class MemberRegisterService {
 
         // 저장
         member = new Member(registerDto.getEmail(), registerDto.getUserId(), encodedPassword);
+        return memberRepository.save(member);
+    }
+
+    public Member changeProfileImage(String userId, String imagePath) {
+        // 멤버 가져오기
+        Member member = memberRepository.findById(userId)
+                .orElseThrow(() -> new RestApiException(MEMBER_NOT_FOUND));
+
+        // 프로필 이미지 경로 업데이트
+        member.setProfileImage(imagePath);
         return memberRepository.save(member);
     }
 }
