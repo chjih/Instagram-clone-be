@@ -21,6 +21,10 @@ spring:
           timeout: 5000
           writetimeout: 5000
 
+  redis:
+    host: localhost
+    port: 6379
+
 jwt:
   secretKey: ${JWT_SECRET_KEY}
   access-token-validate-in-seconds: 1800
