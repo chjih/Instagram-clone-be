@@ -1,7 +1,7 @@
-package com.example.InstagramCloneCoding.global.auth.filter;
+package com.example.InstagramCloneCoding.global.auth.jwt;
 
-import com.example.InstagramCloneCoding.global.auth.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
@@ -20,16 +20,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public static final String BEARER_PREFIX = "Bearer ";
 
     private final JwtTokenProvider tokenProvider;
+    private final RedisTemplate<String, String> redisTemplate;
 
     // JWT 토큰의 인증 정보(Authentication 객체)를 SecurityContext 에 저장
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         // 1. Request Header 에서 토큰을 꺼냄
-        String jwt = resolveToken(request);
+        String token = resolveToken(request);
 
         // 2. validateToken 으로 토큰 유효성 검사 -> 정상 토큰 일 시 SecurityContext 에 저장
-        if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
-            Authentication authentication = tokenProvider.getAuthentication(jwt);
+        if (StringUtils.hasText(token)
+                && tokenProvider.validateToken(token)
+                && redisTemplate.opsForValue().get(token) == null) {
+            Authentication authentication = tokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(request, response);

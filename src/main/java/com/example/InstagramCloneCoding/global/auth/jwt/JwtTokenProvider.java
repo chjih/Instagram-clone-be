@@ -1,4 +1,4 @@
-package com.example.InstagramCloneCoding.global.auth;
+package com.example.InstagramCloneCoding.global.auth.jwt;
 
 import com.example.InstagramCloneCoding.global.auth.dto.TokenDto;
 import io.jsonwebtoken.*;
@@ -43,19 +43,29 @@ public class JwtTokenProvider {
 
     public TokenDto generateToken(Authentication authentication) {
         long now = (new Date()).getTime();
-        Date accessTokenExpiresIn = new Date(now + accessTokenValidateTime);
+        String accessToken = Jwts.builder()
+                .setSubject(authentication.getName())       // payload "sub": "name"
+                .claim(AUTHORITIES_KEY, authentication.getAuthorities()
+                        .stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .collect(Collectors.joining(",")))        // payload "auth": "ROLE_USER"
+                .setExpiration(new Date(now + accessTokenValidateTime))        // payload "exp": 1516239022 (예시)
+                .signWith(SignatureAlgorithm.HS256, secretKey)    // header "alg": "HS512"
+                .compact();
 
-        String accessToken = createAccessToken(authentication, accessTokenExpiresIn);
-        String refreshToken = createRefreshToken(authentication, new Date(now + refreshTokenValidateTime));
+        String refreshToken = Jwts.builder()
+                .setExpiration(new Date(now + accessTokenValidateTime))
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
 
         return TokenDto.builder()
                 .grantType(BEARER_PREFIX)
                 .accessToken(accessToken)
-                .accessTokenExpiresIn(accessTokenExpiresIn.getTime())
+                .accessTokenExpiresIn(now + accessTokenValidateTime)
                 .refreshToken(refreshToken)
+                .refreshTokenExpiresIn(now + refreshTokenValidateTime)
                 .build();
     }
-
 
     // Jwt 토큰에서 인증 정보 조회
     public Authentication getAuthentication(String accessToken) {
@@ -63,10 +73,28 @@ public class JwtTokenProvider {
         if (claims.get(AUTHORITIES_KEY) == null) {
             throw new RuntimeException("권한정보가 없는 토큰입니다.");
         }
-        Collection<? extends GrantedAuthority> authorities = getAuthorities(claims);
+
+        Collection<? extends GrantedAuthority> authorities = Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
 
         UserDetails principal = new User(claims.getSubject(), "", authorities);
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
+    }
+
+    public long getExpiration(String accessToken) {
+        return parseClaims(accessToken).getExpiration().getTime();
+    }
+
+    private Claims parseClaims(String accessToken) {
+        try {
+            return Jwts.parser()
+                    .setSigningKey(secretKey)
+                    .parseClaimsJws(accessToken)
+                    .getBody();
+        } catch (ExpiredJwtException e) {
+            return e.getClaims();
+        }
     }
 
     // 토큰의 유효성, 만료일자 확인
@@ -84,45 +112,5 @@ public class JwtTokenProvider {
             log.info("JWT 토큰이 잘못되었습니다.", e);
         }
         return false;
-    }
-
-    private String getAuthoritiesString(Authentication authentication) {
-        return authentication.getAuthorities()
-                .stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
-    }
-
-    private Collection<? extends GrantedAuthority> getAuthorities(Claims claims) {
-        return Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
-    }
-
-    private String createAccessToken(Authentication authentication, Date accessTokenExpiresIn) {
-        return Jwts.builder()
-                .setSubject(authentication.getName())       // payload "sub": "name"
-                .claim(AUTHORITIES_KEY, getAuthoritiesString(authentication))        // payload "auth": "ROLE_USER"
-                .setExpiration(accessTokenExpiresIn)        // payload "exp": 1516239022 (예시)
-                .signWith(SignatureAlgorithm.HS256, secretKey)    // header "alg": "HS512"
-                .compact();
-    }
-
-    private String createRefreshToken(Authentication authentication, Date refreshTokenExpiresIn) {
-        return Jwts.builder()
-                .setExpiration(refreshTokenExpiresIn)
-                .signWith(SignatureAlgorithm.HS256, secretKey)
-                .compact();
-    }
-
-    private Claims parseClaims(String accessToken) {
-        try {
-            return Jwts.parser()
-                    .setSigningKey(secretKey)
-                    .parseClaimsJws(accessToken)
-                    .getBody();
-        } catch (ExpiredJwtException e) {
-            return e.getClaims();
-        }
     }
 }

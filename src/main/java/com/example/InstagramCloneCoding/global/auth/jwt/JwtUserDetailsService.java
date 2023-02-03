@@ -1,4 +1,4 @@
-package com.example.InstagramCloneCoding.global.auth;
+package com.example.InstagramCloneCoding.global.auth.jwt;
 
 import com.example.InstagramCloneCoding.domain.member.dao.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;

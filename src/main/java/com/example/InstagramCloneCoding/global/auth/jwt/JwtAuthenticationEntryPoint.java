@@ -1,4 +1,4 @@
-package com.example.InstagramCloneCoding.global.auth.filter;
+package com.example.InstagramCloneCoding.global.auth.jwt;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
