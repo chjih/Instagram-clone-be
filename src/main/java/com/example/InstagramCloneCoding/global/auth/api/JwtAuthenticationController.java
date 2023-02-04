@@ -5,6 +5,8 @@ import com.example.InstagramCloneCoding.global.auth.dto.TokenDto;
 import com.example.InstagramCloneCoding.global.auth.service.AuthService;
 import com.example.InstagramCloneCoding.global.auth.service.HeaderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -18,21 +20,25 @@ public class JwtAuthenticationController {
     private final HeaderService headerService;
 
     @PostMapping("signin")
-    public TokenDto signIn(@RequestBody LoginRequestDto loginRequestDto) {
-        return authService.signIn(loginRequestDto.getUserIdOrEmail(), loginRequestDto.getPassword());
+    public ResponseEntity<TokenDto> signIn(@RequestBody LoginRequestDto loginRequestDto) {
+        TokenDto tokenDto = authService.signIn(loginRequestDto.getUserIdOrEmail(), loginRequestDto.getPassword());
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(tokenDto);
     }
 
     @PostMapping("reissue")
-    public TokenDto reissue(@RequestHeader("Authorization") String authorization,
-                            @RequestHeader("RefreshToken") String refreshToken) {
-        return authService.reissue(headerService.getAccessToken(authorization), refreshToken);
+    public ResponseEntity<TokenDto> reissue(@RequestHeader("Authorization") String authorization,
+                                            @RequestHeader("RefreshToken") String refreshToken) {
+        TokenDto tokenDto = authService.reissue(headerService.getAccessToken(authorization), refreshToken);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(tokenDto);
     }
 
     @PostMapping("signout")
-    public String signOut(@RequestHeader("Authorization") String authorization) {
-        if (authService.signOut(headerService.getAccessToken(authorization)))
-            return "logout Success!";
-        return "fail";
+    public ResponseEntity<String> signOut(@RequestHeader("Authorization") String authorization) {
+        authService.signOut(headerService.getAccessToken(authorization));
+        return ResponseEntity.status(HttpStatus.OK)
+                .body("signout success");
     }
 
     @PostMapping("test")

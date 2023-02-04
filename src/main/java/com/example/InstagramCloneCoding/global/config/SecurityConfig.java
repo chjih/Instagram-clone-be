@@ -31,9 +31,8 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션 사용x(jwt 사용)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/signin").permitAll()  // 모든 요청 허가
+                .antMatchers("/signin").permitAll() // 모든 요청 허가
                 .antMatchers("/reissue").permitAll()
-                .antMatchers("/signout").permitAll()
                 .antMatchers("/register").permitAll()
                 .antMatchers("/confirm-email").permitAll()
                 .anyRequest().authenticated()   // 나머지 인증 필요
