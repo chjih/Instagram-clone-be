@@ -22,7 +22,7 @@ public class AwsS3Service {
     @Autowired
     private AmazonS3 amazonS3;
 
-    @Value("${AWS_S3_BUCKET}")
+    @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
     public String upload(MultipartFile multipartFile) {
@@ -33,9 +33,9 @@ public class AwsS3Service {
             objMeta.setContentLength(multipartFile.getInputStream().available());
 
             // s3 버킷에 업로드
-           amazonS3.putObject(
-                new PutObjectRequest(bucket, s3FileName, multipartFile.getInputStream(), objMeta)
-                    .withCannedAcl(CannedAccessControlList.PublicRead) // 업로드되는 파일에 public read 권한 부여
+            amazonS3.putObject(
+                    new PutObjectRequest(bucket, s3FileName, multipartFile.getInputStream(), objMeta)
+                            .withCannedAcl(CannedAccessControlList.PublicRead) // 업로드되는 파일에 public read 권한 부여
             );
         } catch (Exception e) {
             throw new RestApiException(IMAGE_UPLOAD_FAIL);
