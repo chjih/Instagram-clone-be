@@ -46,11 +46,12 @@ public class MemberAccountsApiController {
     }
 
     @PostMapping("edit/profile-image")
-    public ResponseEntity<Member> changeProfileImage(@RequestParam("image")MultipartFile multipartFile,
-                                                     @RequestParam("user_id") String userId) {
+    public ResponseEntity<String> changeProfileImage(@RequestParam("image") MultipartFile multipartFile,
+                                                     @RequestParam("userId") String userId) {
         String imagePath = awsS3Service.upload(multipartFile);
 
+        memberService.changeProfileImage(userId, imagePath);
         return ResponseEntity.status(HttpStatus.OK)
-                .body(memberService.changeProfileImage(userId, imagePath));
+                .body(imagePath);
     }
 }
