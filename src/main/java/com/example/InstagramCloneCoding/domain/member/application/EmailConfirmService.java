@@ -21,11 +21,11 @@ import static com.example.InstagramCloneCoding.domain.member.error.MemberErrorCo
 @RequiredArgsConstructor
 public class EmailConfirmService {
 
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
-    private EmailConfirmationTokenRepository emailConfirmationTokenRepository;
+    private final EmailConfirmationTokenRepository emailConfirmationTokenRepository;
 
-    private EmailSenderService emailSenderService;
+    private final EmailSenderService emailSenderService;
 
     public String createEmailConfirmationToken(String userId, String receiverEmail) {
         EmailConfirmationToken token = EmailConfirmationToken.createEmailConfirmationToken(userId);

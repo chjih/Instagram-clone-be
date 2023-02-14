@@ -19,9 +19,9 @@ import static com.example.InstagramCloneCoding.domain.member.error.MemberErrorCo
 @RequiredArgsConstructor
 public class MemberService {
 
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     public Member register(MemberRegisterDto registerDto) {
         // 아이디 중복 확인

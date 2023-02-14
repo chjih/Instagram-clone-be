@@ -6,11 +6,9 @@ import com.example.InstagramCloneCoding.domain.member.application.MemberService;
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
 import com.example.InstagramCloneCoding.domain.member.dto.MemberRegisterDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 
@@ -21,12 +19,10 @@ import javax.transaction.Transactional;
 @RequiredArgsConstructor
 public class MemberAccountsApiController {
 
+    private final MemberService memberService;
 
-    private MemberService memberService;
+    private final EmailConfirmService emailConfirmService;
 
-    private EmailConfirmService emailConfirmService;
-
-    private AwsS3Service awsS3Service;
 
     @PostMapping("emailsignup")
     public ResponseEntity<Member> register(@RequestBody MemberRegisterDto registerDto) {
