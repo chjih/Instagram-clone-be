@@ -4,6 +4,7 @@ import com.example.InstagramCloneCoding.global.auth.dto.TokenDto;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -33,6 +34,9 @@ public class JwtTokenProvider {
     private long refreshTokenValidateTime;
     public static final String BEARER_PREFIX = "Bearer ";
     private static final String AUTHORITIES_KEY = "auth";
+
+    @Autowired
+    private final JwtUserDetailsService jwtUserDetailsService;
 
     @PostConstruct
     protected void init() {
@@ -78,7 +82,9 @@ public class JwtTokenProvider {
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
 
-        UserDetails principal = new User(claims.getSubject(), "", authorities);
+        //UserDetails principal = new User(claims.getSubject(), "", authorities);
+        UserDetails principal = jwtUserDetailsService.loadUserByUsername(claims.getSubject());
+
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }
 
