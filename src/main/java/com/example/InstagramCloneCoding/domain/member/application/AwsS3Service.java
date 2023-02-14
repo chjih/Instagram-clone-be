@@ -5,6 +5,7 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.example.InstagramCloneCoding.global.error.RestApiException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,9 +18,9 @@ import static com.example.InstagramCloneCoding.domain.member.error.MemberErrorCo
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class AwsS3Service {
 
-    @Autowired
     private AmazonS3 amazonS3;
 
     @Value("${cloud.aws.s3.bucket}")

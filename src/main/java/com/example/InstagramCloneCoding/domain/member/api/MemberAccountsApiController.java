@@ -5,6 +5,7 @@ import com.example.InstagramCloneCoding.domain.member.application.EmailConfirmSe
 import com.example.InstagramCloneCoding.domain.member.application.MemberService;
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
 import com.example.InstagramCloneCoding.domain.member.dto.MemberRegisterDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +18,14 @@ import javax.transaction.Transactional;
 @RestController
 @RequestMapping("accounts/")
 @Transactional
+@RequiredArgsConstructor
 public class MemberAccountsApiController {
 
-    @Autowired
+
     private MemberService memberService;
-    @Autowired
+
     private EmailConfirmService emailConfirmService;
-    @Autowired
+
     private AwsS3Service awsS3Service;
 
     @PostMapping("emailsignup")
@@ -43,15 +45,5 @@ public class MemberAccountsApiController {
         // 이메일 인증 완료하고 member 테이블의 email_verified 컬럼 true로 바꿔주기
         return ResponseEntity.status(HttpStatus.OK)
                 .body(emailConfirmService.confirmEmail(token));
-    }
-
-    @PostMapping("edit/profile-image")
-    public ResponseEntity<String> changeProfileImage(@RequestParam("image") MultipartFile multipartFile,
-                                                     @RequestParam("userId") String userId) {
-        String imagePath = awsS3Service.upload(multipartFile);
-
-        memberService.changeProfileImage(userId, imagePath);
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(imagePath);
     }
 }

@@ -5,6 +5,7 @@ import com.example.InstagramCloneCoding.domain.member.domain.Member;
 import com.example.InstagramCloneCoding.domain.member.dto.MemberRegisterDto;
 import com.example.InstagramCloneCoding.domain.member.error.MemberErrorCode;
 import com.example.InstagramCloneCoding.global.error.RestApiException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,11 +16,11 @@ import static com.example.InstagramCloneCoding.domain.member.error.MemberErrorCo
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class MemberService {
 
-    @Autowired
     private MemberRepository memberRepository;
-    @Autowired
+
     private PasswordEncoder passwordEncoder;
 
     public Member register(MemberRegisterDto registerDto) {

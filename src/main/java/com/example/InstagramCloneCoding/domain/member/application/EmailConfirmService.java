@@ -5,6 +5,7 @@ import com.example.InstagramCloneCoding.domain.member.dao.MemberRepository;
 import com.example.InstagramCloneCoding.domain.member.domain.EmailConfirmationToken;
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
 import com.example.InstagramCloneCoding.global.error.RestApiException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
@@ -17,13 +18,13 @@ import static com.example.InstagramCloneCoding.domain.member.error.MemberErrorCo
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class EmailConfirmService {
 
-    @Autowired
     private MemberRepository memberRepository;
-    @Autowired
+
     private EmailConfirmationTokenRepository emailConfirmationTokenRepository;
-    @Autowired
+
     private EmailSenderService emailSenderService;
 
     public String createEmailConfirmationToken(String userId, String receiverEmail) {
