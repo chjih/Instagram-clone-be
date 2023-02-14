@@ -44,7 +44,7 @@ public class MemberService {
         String encodedPassword = passwordEncoder.encode(registerDto.getPassword());
 
         // 저장
-        member = new Member(registerDto.getEmail(), registerDto.getUserId(), encodedPassword);
+        member = new Member(registerDto.getEmail(), registerDto.getUserId(),registerDto.getName(), encodedPassword);
         return memberRepository.save(member);
     }
 

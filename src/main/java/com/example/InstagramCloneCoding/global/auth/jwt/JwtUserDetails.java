@@ -1,6 +1,7 @@
 package com.example.InstagramCloneCoding.global.auth.jwt;
 
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+
+@Getter
 public class JwtUserDetails implements UserDetails {
     private final Member member;
     private final List<GrantedAuthority> authorities = new ArrayList<>();
