@@ -37,9 +37,10 @@ public class Member {
     @Column(name = "email_verified", nullable = false)
     boolean emailVerified;
 
-    public Member(String email, String userId, String password) {
+    public Member(String email, String userId, String name, String password) {
         this.email = email;
         this.userId = userId;
+        this.name = name;
         this.password = password;
         this.emailVerified = false;
     }
