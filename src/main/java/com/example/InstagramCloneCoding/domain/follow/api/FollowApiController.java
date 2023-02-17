@@ -5,6 +5,7 @@ import com.example.InstagramCloneCoding.domain.follow.dto.FollowDto;
 import com.example.InstagramCloneCoding.domain.member.application.MemberService;
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
 import com.example.InstagramCloneCoding.global.common.annotation.LoggedInUser;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class FollowApiController {
     }
 
     @PostMapping("/follow")
-    public ResponseEntity<String> follow(@LoggedInUser Member member, @RequestBody FollowDto followDto) {
+    public ResponseEntity<String> follow(@Parameter(hidden = true) @LoggedInUser Member member, @RequestBody FollowDto followDto) {
         memberService.existMember(followDto.getFollowingOrFollowerId());
         followService.follow(member.getUserId(), followDto.getFollowingOrFollowerId());
 
@@ -38,7 +39,7 @@ public class FollowApiController {
     }
 
     @DeleteMapping("/unfollow")
-    public ResponseEntity<String> unfollow(@LoggedInUser Member member, @RequestBody FollowDto followDto) {
+    public ResponseEntity<String> unfollow(@Parameter(hidden = true) @LoggedInUser Member member, @RequestBody FollowDto followDto) {
         followService.unfollow(member.getUserId(), followDto.getFollowingOrFollowerId());
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -46,7 +47,7 @@ public class FollowApiController {
     }
 
     @GetMapping("/getfollowers")
-    public ResponseEntity<List<String>> followers(@LoggedInUser Member member) {
+    public ResponseEntity<List<String>> followers(@Parameter(hidden = true) @LoggedInUser Member member) {
         List<String> followers = followService.getFollowers(member.getUserId());
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -54,7 +55,7 @@ public class FollowApiController {
     }
 
     @GetMapping("/getfollowings")
-    public ResponseEntity<List<String>> followings(@LoggedInUser Member member) {
+    public ResponseEntity<List<String>> followings(@Parameter(hidden = true) @LoggedInUser Member member) {
         List<String> followings = followService.getFollowings(member.getUserId());
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -62,7 +63,7 @@ public class FollowApiController {
     }
 
     @GetMapping("/getfollowbacks")
-    public ResponseEntity<List<String>> followBack(@LoggedInUser Member member) {
+    public ResponseEntity<List<String>> followBack(@Parameter(hidden = true) @LoggedInUser Member member) {
         List<String> friends = followService.getFollowBacks(member.getUserId());
 
         return ResponseEntity.status(HttpStatus.OK)
