@@ -14,11 +14,15 @@ import javax.persistence.*;
 public class PostImage {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_image_id", nullable = false)
-    private int postImageId;
+    private String postImageId;
 
     @ManyToOne
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
+
+    public PostImage(String postImageId, Post post) {
+        this.postImageId = postImageId;
+        this.post = post;
+    }
 }

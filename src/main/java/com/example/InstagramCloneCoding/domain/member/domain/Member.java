@@ -37,8 +37,8 @@ public class Member {
     @Column(name = "email_verified", nullable = false)
     boolean emailVerified;
 
-//    @OneToMany(mappedBy = "member")
-//    private List<Post> posts = new ArrayList<>();
+    @OneToMany(mappedBy = "member")
+    private List<Post> posts = new ArrayList<>();
 
     public Member(String email, String userId, String name, String password) {
         this.email = email;

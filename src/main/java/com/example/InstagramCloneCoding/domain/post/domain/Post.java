@@ -4,8 +4,8 @@ import com.example.InstagramCloneCoding.domain.member.domain.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.joda.time.DateTime;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,6 +16,7 @@ import java.util.List;
 @Table(name = "post")
 @Getter @Setter
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Post {
 
     @Id
@@ -27,7 +28,7 @@ public class Post {
     private String content;
 
     @CreatedDate
-    @Column(name = "create_at", nullable = false)
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
     @ManyToOne
@@ -36,4 +37,9 @@ public class Post {
 
     @OneToMany(mappedBy = "post")
     private List<PostImage> postImages = new ArrayList<>();
+
+    public Post(Member member, String content) {
+        this.member = member;
+        this.content = content;
+    }
 }

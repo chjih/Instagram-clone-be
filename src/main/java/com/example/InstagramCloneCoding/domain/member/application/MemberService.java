@@ -6,7 +6,6 @@ import com.example.InstagramCloneCoding.domain.member.dto.MemberRegisterDto;
 import com.example.InstagramCloneCoding.domain.member.error.MemberErrorCode;
 import com.example.InstagramCloneCoding.global.error.RestApiException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
