@@ -7,13 +7,11 @@ import com.example.InstagramCloneCoding.global.auth.service.HeaderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/auth")
 public class JwtAuthenticationController {
 
     private final AuthService authService;
@@ -39,10 +37,5 @@ public class JwtAuthenticationController {
         authService.signOut(headerService.getAccessToken(authorization));
         return ResponseEntity.status(HttpStatus.OK)
                 .body("signout success");
-    }
-
-    @PostMapping("test")
-    public String test() {
-        return "login success";
     }
 }
