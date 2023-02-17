@@ -38,10 +38,6 @@ public class EmailConfirmationToken {
     @Column(name = "created_date")
     private LocalDateTime createdDate;
 
-/*    @LastModifiedDate
-    @Column
-    private LocalDateTime lastModifiedDate;*/
-
     public static EmailConfirmationToken createEmailConfirmationToken(String userId) {
         EmailConfirmationToken token = new EmailConfirmationToken();
         token.setExpirationDate(LocalDateTime.now().plusMinutes(EMAIL_TOKEN_EXPIRATION_TIME_VALUE));

@@ -1,13 +1,13 @@
 package com.example.InstagramCloneCoding.domain.member.domain;
 
+import com.example.InstagramCloneCoding.domain.post.domain.Post;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "member")
@@ -36,6 +36,9 @@ public class Member {
 
     @Column(name = "email_verified", nullable = false)
     boolean emailVerified;
+
+    @OneToMany(mappedBy = "member")
+    private List<Post> posts = new ArrayList<>();
 
     public Member(String email, String userId, String name, String password) {
         this.email = email;
