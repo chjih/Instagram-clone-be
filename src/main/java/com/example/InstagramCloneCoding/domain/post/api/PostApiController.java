@@ -29,7 +29,7 @@ public class PostApiController {
     @PostMapping(value = "write", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<List<String>> write(@Parameter(hidden = true) @LoggedInUser Member member,
                                   @RequestPart("images") List<MultipartFile> images,
-                                  @RequestPart("content") String content) {
+                                  @RequestPart(value = "content", required = false) String content) {
         // s3 bucket에 이미지 업로드
         List<String> fileNameList = awsS3Service.uploadFile(images);
 
