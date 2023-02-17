@@ -44,18 +44,24 @@ public class MemberService {
         String encodedPassword = passwordEncoder.encode(registerDto.getPassword());
 
         // 저장
-        member = new Member(registerDto.getEmail(), registerDto.getUserId(),registerDto.getName(), encodedPassword);
+        member = new Member(registerDto.getEmail(), registerDto.getUserId(), registerDto.getName(), encodedPassword);
         return memberRepository.save(member);
     }
 
-    public Member changeProfileImage(String userId, String imagePath) {
+    public void changeProfileImage(String userId, String imagePath) {
         // 멤버 가져오기
         Member member = memberRepository.findById(userId)
                 .orElseThrow(() -> new RestApiException(MEMBER_NOT_FOUND));
 
         // 프로필 이미지 경로 업데이트
         member.setProfileImage(imagePath);
-        return memberRepository.save(member);
+        memberRepository.save(member);
+    }
+
+    public void existMember(String userId) {
+        if (memberRepository.findById(userId).isEmpty()) {
+            throw new RestApiException(MEMBER_NOT_FOUND);
+        }
     }
 }
 

@@ -7,7 +7,6 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.apache.http.HttpHeaders;
 import org.springdoc.core.GroupedOpenApi;
-import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -35,6 +34,7 @@ public class SwaggerConfig {
                 .bearerFormat("Authorization")
                 .in(SecurityScheme.In.HEADER)
                 .name(HttpHeaders.AUTHORIZATION);
+
         // Security 요청 설정
         SecurityRequirement addSecurityItem = new SecurityRequirement().addList("Authorization");
 

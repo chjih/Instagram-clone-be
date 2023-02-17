@@ -14,6 +14,7 @@ import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import static com.example.InstagramCloneCoding.global.auth.error.AuthErrorCode.INVALID_REFRESH_TOKEN;
 import static com.example.InstagramCloneCoding.global.auth.error.AuthErrorCode.WRONG_ID_PASSWORD;
 
 @Service
@@ -46,8 +47,9 @@ public class AuthService {
 
     public TokenDto reissue(String accessToken, String refreshToken) {
         Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
+        // refresh token 유효기간 확인
         if (!refreshToken.equals(redisTemplate.opsForValue().get("RT:" + authentication.getName()))) {
-            return null;
+            throw new RestApiException(INVALID_REFRESH_TOKEN);
         }
 
         TokenDto tokenDto = jwtTokenProvider.generateToken(authentication);
