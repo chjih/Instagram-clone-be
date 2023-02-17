@@ -12,14 +12,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.example.InstagramCloneCoding.global.auth.error.AuthErrorCode.INVALID_TOKEN;
+import static com.example.InstagramCloneCoding.global.auth.error.AuthErrorCode.INVALID_ACCESS_TOKEN;
 
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         // 유효한 자격증명을 제공하지 않고 접근 -> 401에러
-        ErrorCode errorCode = INVALID_TOKEN;
+        ErrorCode errorCode = INVALID_ACCESS_TOKEN;
 
         response.setStatus(errorCode.getHttpStatus().value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

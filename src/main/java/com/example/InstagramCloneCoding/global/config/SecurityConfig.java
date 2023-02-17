@@ -22,7 +22,7 @@ public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisTemplate<String, String> redisTemplate;
-    private static final String[] SWAGGER_LIST={
+    private static final String[] SWAGGER_LIST = {
             // swagger 접근 허용
             "/v3/api-docs/**",
             "/swagger-ui/**",
@@ -31,14 +31,13 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors().disable()        // cors 방지
+        http.cors().disable()
                 .csrf().disable()        // csrf 방지
                 .formLogin().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션 사용x(jwt 사용)
-                .and()
-                .authorizeRequests()
-                .antMatchers("/signin").permitAll() // 모든 요청 허가
-                .antMatchers("/reissue").permitAll()
+
+        http.authorizeRequests()
+                .antMatchers("/auth/signin").permitAll() // 모든 요청 허가
+                .antMatchers("/auth/reissue").permitAll()
                 .antMatchers("/accounts/**").permitAll()
                 .antMatchers(SWAGGER_LIST).permitAll()
                 .anyRequest().authenticated()   // 나머지 인증 필요
