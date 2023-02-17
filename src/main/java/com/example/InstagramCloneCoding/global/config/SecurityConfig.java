@@ -31,12 +31,12 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors().disable()        // cors 방지
+        http.cors().disable()
                 .csrf().disable()        // csrf 방지
                 .formLogin().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션 사용x(jwt 사용)
-                .and()
-                .authorizeRequests()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // 세션 사용x(jwt 사용)
+
+        http.authorizeRequests()
                 .antMatchers("/auth/signin").permitAll() // 모든 요청 허가
                 .antMatchers("/auth/reissue").permitAll()
                 .antMatchers("/accounts/emailsignup").permitAll()
