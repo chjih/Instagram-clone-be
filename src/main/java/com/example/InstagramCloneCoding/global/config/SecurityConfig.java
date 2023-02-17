@@ -34,6 +34,7 @@ public class SecurityConfig {
         http.cors().disable()
                 .csrf().disable()        // csrf 방지
                 .formLogin().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // 세션 사용x(jwt 사용)
 
         http.authorizeRequests()
                 .antMatchers("/auth/signin").permitAll() // 모든 요청 허가
