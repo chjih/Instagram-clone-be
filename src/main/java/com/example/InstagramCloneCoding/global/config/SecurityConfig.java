@@ -22,7 +22,7 @@ public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisTemplate<String, String> redisTemplate;
-    private static final String[] SWAGGER_LIST={
+    private static final String[] SWAGGER_LIST = {
             // swagger 접근 허용
             "/v3/api-docs/**",
             "/swagger-ui/**",
@@ -37,8 +37,8 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션 사용x(jwt 사용)
                 .and()
                 .authorizeRequests()
-                .antMatchers("auth/signin").permitAll() // 모든 요청 허가
-                .antMatchers("auth/reissue").permitAll()
+                .antMatchers("/auth/signin").permitAll() // 모든 요청 허가
+                .antMatchers("/auth/reissue").permitAll()
                 .antMatchers("/accounts/emailsignup").permitAll()
                 .antMatchers("/accounts/confirm-email").permitAll()
                 .antMatchers(SWAGGER_LIST).permitAll()

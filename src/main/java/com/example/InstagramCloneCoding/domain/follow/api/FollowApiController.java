@@ -14,13 +14,13 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/follow")
+@RequestMapping("/relationship")
 public class FollowApiController {
 
     private final FollowService followService;
     private final MemberService memberService;
 
-    @PostMapping("/searchmember")
+    @GetMapping("/searchmember")
     public ResponseEntity<String> searchMember(@RequestParam String userId) {
         memberService.existMember(userId);
 
@@ -28,8 +28,8 @@ public class FollowApiController {
                 .body("member exist");
     }
 
-    @PostMapping("/following")
-    public ResponseEntity<String> following(@LoggedInUser Member member, @RequestBody FollowDto followDto) {
+    @PostMapping("/follow")
+    public ResponseEntity<String> follow(@LoggedInUser Member member, @RequestBody FollowDto followDto) {
         memberService.existMember(followDto.getFollowingOrFollowerId());
         followService.follow(member.getUserId(), followDto.getFollowingOrFollowerId());
 
@@ -37,7 +37,7 @@ public class FollowApiController {
                 .body("following success!");
     }
 
-    @PostMapping("/unfollow")
+    @DeleteMapping("/unfollow")
     public ResponseEntity<String> unfollow(@LoggedInUser Member member, @RequestBody FollowDto followDto) {
         followService.unfollow(member.getUserId(), followDto.getFollowingOrFollowerId());
 
@@ -45,7 +45,7 @@ public class FollowApiController {
                 .body("unfollow success!");
     }
 
-    @GetMapping("/followers")
+    @GetMapping("/getfollowers")
     public ResponseEntity<List<String>> followers(@LoggedInUser Member member) {
         List<String> followers = followService.getFollowers(member.getUserId());
 
@@ -53,7 +53,7 @@ public class FollowApiController {
                 .body(followers);
     }
 
-    @GetMapping("/followings")
+    @GetMapping("/getfollowings")
     public ResponseEntity<List<String>> followings(@LoggedInUser Member member) {
         List<String> followings = followService.getFollowings(member.getUserId());
 
@@ -61,7 +61,7 @@ public class FollowApiController {
                 .body(followings);
     }
 
-    @GetMapping("/followback")
+    @GetMapping("/getfollowbacks")
     public ResponseEntity<List<String>> followBack(@LoggedInUser Member member) {
         List<String> friends = followService.getFollowBacks(member.getUserId());
 
