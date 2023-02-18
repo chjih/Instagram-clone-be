@@ -1,8 +1,9 @@
 package com.example.InstagramCloneCoding.global.common.resolver;
 
+import com.example.InstagramCloneCoding.domain.member.application.MemberService;
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
-import com.example.InstagramCloneCoding.global.auth.jwt.JwtUserDetails;
 import com.example.InstagramCloneCoding.global.common.annotation.LoggedInUser;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,7 +14,10 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 @Component
+@RequiredArgsConstructor
 public class LoggedInUserArgumentResolver implements HandlerMethodArgumentResolver {
+
+    private final MemberService memberService;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -29,15 +33,9 @@ public class LoggedInUserArgumentResolver implements HandlerMethodArgumentResolv
             ModelAndViewContainer mavContainer,
             NativeWebRequest webRequest,
             WebDataBinderFactory binderFactory) throws Exception {
-        JwtUserDetails userDetails = null;
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (authentication != null) {
-            userDetails = (JwtUserDetails) authentication.getPrincipal();
-            return userDetails.getMember();
-        }
-        else
-            return null;
+        return memberService.findMember(authentication.getName());
     }
 }
