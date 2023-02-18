@@ -23,7 +23,7 @@ public class FollowApiController {
 
     @GetMapping("/searchmember")
     public ResponseEntity<String> searchMember(@RequestParam String userId) {
-        memberService.existMember(userId);
+        memberService.findMember(userId);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body("member exist");
@@ -31,8 +31,8 @@ public class FollowApiController {
 
     @PostMapping("/follow")
     public ResponseEntity<String> follow(@Parameter(hidden = true) @LoggedInUser Member member, @RequestBody FollowDto followDto) {
-        memberService.existMember(followDto.getFollowingOrFollowerId());
-        followService.follow(member.getUserId(), followDto.getFollowingOrFollowerId());
+        Member following = memberService.findMember(followDto.getFollowingOrFollowerId());
+        followService.follow(member, following);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body("following success!");
@@ -40,7 +40,8 @@ public class FollowApiController {
 
     @DeleteMapping("/unfollow")
     public ResponseEntity<String> unfollow(@Parameter(hidden = true) @LoggedInUser Member member, @RequestBody FollowDto followDto) {
-        followService.unfollow(member.getUserId(), followDto.getFollowingOrFollowerId());
+        Member following = memberService.findMember(followDto.getFollowingOrFollowerId());
+        followService.unfollow(member, following);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body("unfollow success!");
@@ -48,7 +49,7 @@ public class FollowApiController {
 
     @GetMapping("/getfollowers")
     public ResponseEntity<List<String>> followers(@Parameter(hidden = true) @LoggedInUser Member member) {
-        List<String> followers = followService.getFollowers(member.getUserId());
+        List<String> followers = followService.getFollowers(member);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(followers);
@@ -56,7 +57,7 @@ public class FollowApiController {
 
     @GetMapping("/getfollowings")
     public ResponseEntity<List<String>> followings(@Parameter(hidden = true) @LoggedInUser Member member) {
-        List<String> followings = followService.getFollowings(member.getUserId());
+        List<String> followings = followService.getFollowings(member);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(followings);
@@ -64,7 +65,7 @@ public class FollowApiController {
 
     @GetMapping("/getfollowbacks")
     public ResponseEntity<List<String>> followBack(@Parameter(hidden = true) @LoggedInUser Member member) {
-        List<String> friends = followService.getFollowBacks(member.getUserId());
+        List<String> friends = followService.getFollowBacks(member);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(friends);
