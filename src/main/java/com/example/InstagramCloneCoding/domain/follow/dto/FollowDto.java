@@ -10,5 +10,5 @@ import javax.validation.constraints.NotBlank;
 public class FollowDto {
 
     @NotBlank
-    String followingOrFollowerId;
+    private String followingOrFollowerId;
 }
