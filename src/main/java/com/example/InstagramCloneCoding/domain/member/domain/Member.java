@@ -1,5 +1,6 @@
 package com.example.InstagramCloneCoding.domain.member.domain;
 
+import com.example.InstagramCloneCoding.domain.follow.domain.Follow;
 import com.example.InstagramCloneCoding.domain.post.domain.Post;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "member")
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 public class Member {
 
@@ -39,6 +41,12 @@ public class Member {
 
     @OneToMany(mappedBy = "member")
     private List<Post> posts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "follower")
+    private List<Follow> followings = new ArrayList<>();
+
+    @OneToMany(mappedBy = "following")
+    private List<Follow> followers = new ArrayList<>();
 
     public Member(String email, String userId, String name, String password) {
         this.email = email;
