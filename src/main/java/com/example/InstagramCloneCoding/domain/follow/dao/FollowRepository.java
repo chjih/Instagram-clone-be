@@ -1,14 +1,14 @@
 package com.example.InstagramCloneCoding.domain.follow.dao;
 
 import com.example.InstagramCloneCoding.domain.follow.domain.Follow;
-import com.example.InstagramCloneCoding.domain.follow.domain.FollowId;
+import com.example.InstagramCloneCoding.domain.member.domain.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Optional;
 
-public interface FollowRepository extends JpaRepository<Follow, FollowId> {
+@Repository
+public interface FollowRepository extends JpaRepository<Follow, Integer> {
 
-    List<Follow> findByFollowerId(String followId);
-
-    List<Follow> findByFollowingId(String followingId);
+    Optional<Follow> findByFollowerAndFollowing(Member follower, Member following);
 }

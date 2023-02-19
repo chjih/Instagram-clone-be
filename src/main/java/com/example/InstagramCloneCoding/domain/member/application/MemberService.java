@@ -58,10 +58,13 @@ public class MemberService {
         memberRepository.save(member);
     }
 
-    public void existMember(String userId) {
-        if (memberRepository.findById(userId).isEmpty()) {
+    public Member findMember(String userId) {
+        Member member = memberRepository.findById(userId).orElse(null);
+        if (member == null) {
             throw new RestApiException(MEMBER_NOT_FOUND);
         }
+
+        return member;
     }
 }
 
