@@ -3,6 +3,7 @@ package com.example.InstagramCloneCoding.domain.member.application;
 import com.example.InstagramCloneCoding.domain.member.dao.MemberRepository;
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
 import com.example.InstagramCloneCoding.domain.member.dto.MemberRegisterDto;
+import com.example.InstagramCloneCoding.domain.member.dto.MemberResponseDto;
 import com.example.InstagramCloneCoding.domain.member.error.MemberErrorCode;
 import com.example.InstagramCloneCoding.global.error.RestApiException;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ public class MemberService {
 
     private final PasswordEncoder passwordEncoder;
 
-    public Member register(MemberRegisterDto registerDto) {
+    public MemberResponseDto register(MemberRegisterDto registerDto) {
         // 아이디 중복 확인
         Member member = memberRepository.findById(registerDto.getUserId()).orElse(null);
         if (member != null) {
@@ -45,7 +46,10 @@ public class MemberService {
 
         // 저장
         member = new Member(registerDto.getEmail(), registerDto.getUserId(), registerDto.getName(), encodedPassword);
-        return memberRepository.save(member);
+        memberRepository.save(member);
+
+        return new MemberResponseDto(member.getUserId(), member.getEmail(), member.getName(),
+                member.getProfileImage(), member.getIntroduction());
     }
 
     public void changeProfileImage(String userId, String imagePath) {
