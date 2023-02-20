@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -39,5 +40,25 @@ public class PostApiController {
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(postResponseDto);
+    }
+
+    @GetMapping(value = "readAll")
+    public ResponseEntity<List<PostResponseDto>> readAll(@Parameter(hidden = true) @LoggedInUser Member member) {
+        List<PostResponseDto> postResponseDtos = new ArrayList<>();
+
+        member.getPosts().forEach(post -> {
+            List<String> postImages = new ArrayList<>();
+            post.getPostImages().forEach(postImage -> {
+                postImages.add(postImage.getPostImageId());
+            });
+
+            PostResponseDto postResponseDto = new PostResponseDto(post.getPostId(), post.getContent(),
+                    post.getCreatedAt(), postImages);
+
+            postResponseDtos.add(postResponseDto);
+        });
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(postResponseDtos);
     }
 }
