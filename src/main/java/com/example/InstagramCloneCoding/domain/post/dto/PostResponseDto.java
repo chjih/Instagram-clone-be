@@ -1,6 +1,6 @@
 package com.example.InstagramCloneCoding.domain.post.dto;
 
-import com.example.InstagramCloneCoding.domain.post.domain.PostImage;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,6 +16,7 @@ public class PostResponseDto {
 
     private String content;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMddHHmmss")
     private LocalDateTime createdAt;
 
     private List<String> postImages;
