@@ -6,7 +6,6 @@ import com.example.InstagramCloneCoding.domain.post.application.PostService;
 import com.example.InstagramCloneCoding.domain.post.domain.Post;
 import com.example.InstagramCloneCoding.domain.post.dto.PostResponseDto;
 import com.example.InstagramCloneCoding.global.common.annotation.LoggedInUser;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -36,9 +35,9 @@ public class PostApiController {
         List<String> fileNameList = awsS3Service.uploadFile(images);
 
         // 데이터베이스에 저장
-        Post post = postService.uploadPost(member, content, fileNameList);
+        PostResponseDto postResponseDto = postService.uploadPost(member, content, fileNameList);
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new PostResponseDto(post.getPostId(), post.getContent(), post.getCreatedAt(), fileNameList));
+                .body(postResponseDto);
     }
 }

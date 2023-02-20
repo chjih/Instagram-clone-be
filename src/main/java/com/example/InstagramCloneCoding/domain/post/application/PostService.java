@@ -5,6 +5,7 @@ import com.example.InstagramCloneCoding.domain.post.dao.PostImageRepository;
 import com.example.InstagramCloneCoding.domain.post.dao.PostRepository;
 import com.example.InstagramCloneCoding.domain.post.domain.Post;
 import com.example.InstagramCloneCoding.domain.post.domain.PostImage;
+import com.example.InstagramCloneCoding.domain.post.dto.PostResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class PostService {
 
     private final PostImageRepository postImageRepository;
 
-    public Post uploadPost(Member member, String content, List<String> fileNameList) {
+    public PostResponseDto uploadPost(Member member, String content, List<String> fileNameList) {
         // post 저장
         Post post = new Post(member, content);
         postRepository.save(post);
@@ -31,6 +32,6 @@ public class PostService {
             postImageRepository.save(postImage);
         });
 
-        return post;
+        return new PostResponseDto(post.getPostId(), post.getContent(), post.getCreatedAt(), fileNameList);
     }
 }
