@@ -6,11 +6,15 @@ import com.example.InstagramCloneCoding.domain.post.dao.PostRepository;
 import com.example.InstagramCloneCoding.domain.post.domain.Post;
 import com.example.InstagramCloneCoding.domain.post.domain.PostImage;
 import com.example.InstagramCloneCoding.domain.post.dto.PostResponseDto;
+import com.example.InstagramCloneCoding.global.error.RestApiException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.InstagramCloneCoding.domain.post.error.PostErrorCode.POST_NOT_FOUND;
 
 @Service
 @Transactional
@@ -33,5 +37,17 @@ public class PostService {
         });
 
         return new PostResponseDto(post.getPostId(), post.getContent(), post.getCreatedAt(), fileNameList);
+    }
+
+    public PostResponseDto findByPostId(int post_id) {
+        Post post = postRepository.findById(post_id)
+                .orElseThrow(() -> new RestApiException(POST_NOT_FOUND));
+
+        List<String> postImages = new ArrayList<>();
+        post.getPostImages().forEach(postImage -> {
+            postImages.add(postImage.getPostImageId());
+        });
+
+        return new PostResponseDto(post.getPostId(), post.getContent(), post.getCreatedAt(), postImages);
     }
 }

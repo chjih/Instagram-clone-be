@@ -42,7 +42,7 @@ public class PostApiController {
                 .body(postResponseDto);
     }
 
-    @GetMapping(value = "readAll")
+    @GetMapping(value = "read")
     public ResponseEntity<List<PostResponseDto>> readAll(@Parameter(hidden = true) @LoggedInUser Member member) {
         List<PostResponseDto> postResponseDtos = new ArrayList<>();
 
@@ -60,5 +60,14 @@ public class PostApiController {
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(postResponseDtos);
+    }
+
+    @GetMapping(value = "read/{post_id}")
+    public ResponseEntity<PostResponseDto> read(@Parameter(hidden = true) @LoggedInUser Member member,
+                                                @PathVariable("post_id") int post_id) {
+        PostResponseDto postResponseDto = postService.findByPostId(post_id);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(postResponseDto);
     }
 }
