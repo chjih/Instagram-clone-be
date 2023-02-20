@@ -31,7 +31,7 @@ public class AwsS3Service {
         List<String> fileNameList = new ArrayList<>();
 
         multipartFiles.forEach(file -> {
-            String s3FileName = UUID.randomUUID() + "-" + file.getOriginalFilename(); // 이름 중복 피하기
+            String s3FileName = UUID.randomUUID().toString(); // 이름 중복 피하기
 
             try {
                 ObjectMetadata objMeta = new ObjectMetadata();
