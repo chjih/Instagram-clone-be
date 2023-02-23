@@ -20,8 +20,8 @@ public class HomeService {
     private final PostRepository postRepository;
 
     public List<PostResponseDto> getHomePosts(Member member, List<Member> followers){
-        List<Post> posts = postRepository.findByMemberInAndCreatedAtGreaterThanEqual(followers, member.getLastHomeAccessed());
-        member.setLastHomeAccessed(LocalDateTime.now());
+        List<Post> posts = postRepository.findByMemberInAndCreatedAtGreaterThanEqual(followers, member.getLastHomeAccessTime());
+        member.setLastHomeAccessTime(LocalDateTime.now());
 
         return posts.stream()
                 .map(post->PostResponseDto.builder()
