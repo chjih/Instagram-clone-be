@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 
 import static com.example.InstagramCloneCoding.domain.member.error.MemberErrorCode.MEMBER_NOT_FOUND;
 
@@ -44,7 +45,14 @@ public class MemberService {
         String encodedPassword = passwordEncoder.encode(registerDto.getPassword());
 
         // 저장
-        member = new Member(registerDto.getEmail(), registerDto.getUserId(), registerDto.getName(), encodedPassword);
+        member = Member.builder()
+                .email(registerDto.getEmail())
+                .userId(registerDto.getUserId())
+                .name(registerDto.getName())
+                .password(encodedPassword)
+                .lastHomeAccessed(LocalDateTime.now())
+                .build();
+
         return memberRepository.save(member);
     }
 

@@ -2,6 +2,7 @@ package com.example.InstagramCloneCoding.domain.member.domain;
 
 import com.example.InstagramCloneCoding.domain.follow.domain.Follow;
 import com.example.InstagramCloneCoding.domain.post.domain.Post;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -52,11 +53,13 @@ public class Member {
     @OneToMany(mappedBy = "following")
     private List<Follow> followers = new ArrayList<>();
 
-    public Member(String email, String userId, String name, String password) {
+    @Builder
+    public Member(String email, String userId, String name, String password, LocalDateTime lastHomeAccessed) {
         this.email = email;
         this.userId = userId;
         this.name = name;
         this.password = password;
         this.emailVerified = false;
+        this.lastHomeAccessed = lastHomeAccessed;
     }
 }
