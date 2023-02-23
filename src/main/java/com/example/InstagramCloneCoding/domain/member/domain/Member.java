@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +39,9 @@ public class Member {
 
     @Column(name = "email_verified", nullable = false)
     boolean emailVerified;
+
+    @Column(name = "last_home_access_time")
+    LocalDateTime lastHomeAccessed;
 
     @OneToMany(mappedBy = "member")
     private List<Post> posts = new ArrayList<>();
