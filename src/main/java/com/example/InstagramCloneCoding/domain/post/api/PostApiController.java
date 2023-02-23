@@ -1,6 +1,5 @@
 package com.example.InstagramCloneCoding.domain.post.api;
 
-import com.example.InstagramCloneCoding.domain.member.application.AwsS3Service;
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
 import com.example.InstagramCloneCoding.domain.post.application.PostService;
 import com.example.InstagramCloneCoding.domain.post.dto.PostResponseDto;
@@ -13,52 +12,48 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("post/")
-@Transactional
 @RequiredArgsConstructor
 public class PostApiController {
 
     private final PostService postService;
 
-    private final AwsS3Service awsS3Service;
-
-    @PostMapping(value = "write", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<PostResponseDto> write(@Parameter(hidden = true) @LoggedInUser Member member,
                                 @RequestPart("images") List<MultipartFile> images,
                                 @RequestPart(value = "content", required = false) String content) {
-        // s3 bucket에 이미지 업로드
-        List<String> fileNameList = awsS3Service.uploadFile(images);
 
-        // 데이터베이스에 저장
-        PostResponseDto postResponseDto = postService.uploadPost(member, content, fileNameList);
+        PostResponseDto postResponseDto = postService.uploadPost(member, content, images);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(postResponseDto);
     }
 
-    @GetMapping(value = "read")
+    @GetMapping(value = "/")
     public ResponseEntity<List<PostResponseDto>> readAll(@Parameter(hidden = true) @LoggedInUser Member member) {
-        List<PostResponseDto> postResponseDtos = new ArrayList<>();
-
-        member.getPosts().forEach(post ->
-            postResponseDtos.add(post.postToResponseDto())
-        );
+        List<PostResponseDto> postResponseDtos = postService.findAll(member);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(postResponseDtos);
     }
 
-    @GetMapping(value = "read/{post_id}")
+    @GetMapping(value = "/{post_id}")
     public ResponseEntity<PostResponseDto> read(@Parameter(hidden = true) @LoggedInUser Member member,
-                                                @PathVariable("post_id") int post_id) {
-        PostResponseDto postResponseDto = postService.findByPostId(post_id);
+                                                @PathVariable("post_id") int postId) {
+        PostResponseDto postResponseDto = postService.findByPostId(postId);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(postResponseDto);
+    }
+
+    @DeleteMapping(value = "/{post_id}")
+    public ResponseEntity delete(@Parameter(hidden = true) @LoggedInUser Member member,
+                                 @PathVariable("post_id") int postId) {
+        postService.deletePost(member, postId);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
