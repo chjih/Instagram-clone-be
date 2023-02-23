@@ -50,7 +50,7 @@ public class MemberService {
                 .userId(registerDto.getUserId())
                 .name(registerDto.getName())
                 .password(encodedPassword)
-                .lastHomeAccessed(LocalDateTime.now())
+                .lastHomeAccessTime(LocalDateTime.now())
                 .build();
 
         return memberRepository.save(member);
