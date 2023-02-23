@@ -1,6 +1,7 @@
 package com.example.InstagramCloneCoding.domain.post.domain;
 
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
+import com.example.InstagramCloneCoding.domain.post.dto.PostResponseDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -41,5 +42,14 @@ public class Post {
     public Post(Member member, String content) {
         this.member = member;
         this.content = content;
+    }
+
+    public PostResponseDto postToResponseDto() {
+       return PostResponseDto.builder()
+                .postId(postId)
+                .content(content)
+                .createdAt(createdAt)
+                .postImages(postImages)
+                .build();
     }
 }

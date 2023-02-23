@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.InstagramCloneCoding.domain.post.error.PostErrorCode.POST_NOT_FOUND;
@@ -36,18 +35,13 @@ public class PostService {
             postImageRepository.save(postImage);
         });
 
-        return new PostResponseDto(post.getPostId(), post.getContent(), post.getCreatedAt(), fileNameList);
+        return post.postToResponseDto();
     }
 
     public PostResponseDto findByPostId(int post_id) {
         Post post = postRepository.findById(post_id)
                 .orElseThrow(() -> new RestApiException(POST_NOT_FOUND));
 
-        List<String> postImages = new ArrayList<>();
-        post.getPostImages().forEach(postImage -> {
-            postImages.add(postImage.getPostImageId());
-        });
-
-        return new PostResponseDto(post.getPostId(), post.getContent(), post.getCreatedAt(), postImages);
+        return post.postToResponseDto();
     }
 }

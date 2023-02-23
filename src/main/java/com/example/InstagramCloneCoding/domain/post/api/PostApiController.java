@@ -3,7 +3,6 @@ package com.example.InstagramCloneCoding.domain.post.api;
 import com.example.InstagramCloneCoding.domain.member.application.AwsS3Service;
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
 import com.example.InstagramCloneCoding.domain.post.application.PostService;
-import com.example.InstagramCloneCoding.domain.post.domain.Post;
 import com.example.InstagramCloneCoding.domain.post.dto.PostResponseDto;
 import com.example.InstagramCloneCoding.global.common.annotation.LoggedInUser;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -46,17 +45,9 @@ public class PostApiController {
     public ResponseEntity<List<PostResponseDto>> readAll(@Parameter(hidden = true) @LoggedInUser Member member) {
         List<PostResponseDto> postResponseDtos = new ArrayList<>();
 
-        member.getPosts().forEach(post -> {
-            List<String> postImages = new ArrayList<>();
-            post.getPostImages().forEach(postImage -> {
-                postImages.add(postImage.getPostImageId());
-            });
-
-            PostResponseDto postResponseDto = new PostResponseDto(post.getPostId(), post.getContent(),
-                    post.getCreatedAt(), postImages);
-
-            postResponseDtos.add(postResponseDto);
-        });
+        member.getPosts().forEach(post ->
+            postResponseDtos.add(post.postToResponseDto())
+        );
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(postResponseDtos);
