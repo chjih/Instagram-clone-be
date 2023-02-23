@@ -15,13 +15,12 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@RequestMapping("post/")
 @RequiredArgsConstructor
 public class PostApiController {
 
     private final PostService postService;
 
-    @PostMapping(value = "write", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/{member_id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<PostResponseDto> write(@Parameter(hidden = true) @LoggedInUser Member member,
                                 @RequestPart("images") List<MultipartFile> images,
                                 @RequestPart(value = "content", required = false) String content) {
@@ -32,7 +31,7 @@ public class PostApiController {
                 .body(postResponseDto);
     }
 
-    @GetMapping(value = "readAll/{member_id}")
+    @GetMapping(value = "/{member_id}")
     public ResponseEntity<List<PostResponseDto>> readAll(@Parameter(hidden = true) @LoggedInUser Member member,
                                                          @PathVariable("member_id") String memberId) {
         List<PostResponseDto> postResponseDtos = postService.findAll(memberId);
@@ -41,7 +40,7 @@ public class PostApiController {
                 .body(postResponseDtos);
     }
 
-    @GetMapping(value = "read/{post_id}")
+    @GetMapping(value = "p/{post_id}")
     public ResponseEntity<PostResponseDto> read(@Parameter(hidden = true) @LoggedInUser Member member,
                                                 @PathVariable("post_id") int postId) {
         PostResponseDto postResponseDto = postService.findByPostId(postId);
@@ -50,7 +49,7 @@ public class PostApiController {
                 .body(postResponseDto);
     }
 
-    @DeleteMapping(value = "/{post_id}")
+    @DeleteMapping(value = "p/{post_id}")
     public ResponseEntity delete(@Parameter(hidden = true) @LoggedInUser Member member,
                                  @PathVariable("post_id") int postId) {
         postService.deletePost(member, postId);
