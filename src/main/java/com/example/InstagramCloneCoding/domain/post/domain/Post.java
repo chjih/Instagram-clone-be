@@ -36,7 +36,7 @@ public class Post {
     @JoinColumn(name = "user_id", nullable = false)
     private Member member;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", orphanRemoval = true)
     private List<PostImage> postImages = new ArrayList<>();
 
     public Post(Member member, String content) {
