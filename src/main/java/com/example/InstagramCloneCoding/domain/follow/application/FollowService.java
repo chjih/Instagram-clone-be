@@ -43,25 +43,31 @@ public class FollowService {
         followRepository.delete(follow);
     }
 
-    public List<String> getFollowers(Member member) {
+    public List<Member> getFollowers(Member member) {
         List<Follow> followerList = member.getFollowers();
 
         return followerList.stream()
-                .map(x -> x.getFollower().getUserId())
+                .map(Follow::getFollower)
                 .collect(Collectors.toList());
     }
 
-    public List<String> getFollowings(Member member) {
+    public List<Member> getFollowings(Member member) {
         List<Follow> followingList = member.getFollowings();
 
         return followingList.stream()
-                .map(x -> x.getFollowing().getUserId())
+                .map(Follow::getFollowing)
                 .collect(Collectors.toList());
     }
 
-    public List<String> getFollowBacks(Member member) {
-        List<String> followBackList = getFollowings(member);
+    public List<Member> getFollowBacks(Member member) {
+        List<Member> followBackList = getFollowings(member);
         followBackList.retainAll(getFollowers(member));
         return followBackList;
+    }
+
+    public List<String> getIds(List<Member> friends) {
+        return friends.stream()
+                .map(Member::getUserId)
+                .collect(Collectors.toList());
     }
 }

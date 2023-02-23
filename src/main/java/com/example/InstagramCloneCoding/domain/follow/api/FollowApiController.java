@@ -49,25 +49,28 @@ public class FollowApiController {
 
     @GetMapping("/getfollowers")
     public ResponseEntity<List<String>> followers(@Parameter(hidden = true) @LoggedInUser Member member) {
-        List<String> followers = followService.getFollowers(member);
+        List<Member> followers = followService.getFollowers(member);
+        List<String> followerIds = followService.getIds(followers);
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(followers);
+                .body(followerIds);
     }
 
     @GetMapping("/getfollowings")
     public ResponseEntity<List<String>> followings(@Parameter(hidden = true) @LoggedInUser Member member) {
-        List<String> followings = followService.getFollowings(member);
+        List<Member> followings = followService.getFollowings(member);
+        List<String> followingIds = followService.getIds(followings);
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(followings);
+                .body(followingIds);
     }
 
     @GetMapping("/getfollowbacks")
     public ResponseEntity<List<String>> followBack(@Parameter(hidden = true) @LoggedInUser Member member) {
-        List<String> friends = followService.getFollowBacks(member);
+        List<Member> friends = followService.getFollowBacks(member);
+        List<String> friendIds = followService.getIds(friends);
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(friends);
+                .body(friendIds);
     }
 }
