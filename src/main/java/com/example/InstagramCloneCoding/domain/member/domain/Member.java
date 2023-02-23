@@ -39,7 +39,7 @@ public class Member {
     @Column(name = "email_verified", nullable = false)
     private boolean emailVerified;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
 
     @OneToMany(mappedBy = "follower")
