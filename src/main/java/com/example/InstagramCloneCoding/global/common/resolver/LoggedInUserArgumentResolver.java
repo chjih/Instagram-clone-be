@@ -1,6 +1,6 @@
 package com.example.InstagramCloneCoding.global.common.resolver;
 
-import com.example.InstagramCloneCoding.domain.member.application.MemberService;
+import com.example.InstagramCloneCoding.domain.member.dao.MemberRepository;
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
 import com.example.InstagramCloneCoding.global.common.annotation.LoggedInUser;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 @RequiredArgsConstructor
 public class LoggedInUserArgumentResolver implements HandlerMethodArgumentResolver {
 
-    private final MemberService memberService;
+    private final MemberRepository memberRepository;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -36,6 +36,6 @@ public class LoggedInUserArgumentResolver implements HandlerMethodArgumentResolv
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        return memberService.findMember(authentication.getName());
+        return memberRepository.findById(authentication.getName()).orElse(null);
     }
 }
