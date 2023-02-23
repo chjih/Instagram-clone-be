@@ -1,6 +1,7 @@
 package com.example.InstagramCloneCoding.domain.post.application;
 
 import com.example.InstagramCloneCoding.domain.member.application.AwsS3Service;
+import com.example.InstagramCloneCoding.domain.member.dao.MemberRepository;
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
 import com.example.InstagramCloneCoding.domain.post.dao.PostImageRepository;
 import com.example.InstagramCloneCoding.domain.post.dao.PostRepository;
@@ -16,6 +17,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.InstagramCloneCoding.domain.member.error.MemberErrorCode.MEMBER_NOT_FOUND;
 import static com.example.InstagramCloneCoding.domain.post.error.PostErrorCode.POST_NOT_FOUND;
 import static com.example.InstagramCloneCoding.global.error.CommonErrorCode.FORBIDDEN;
 
@@ -27,6 +29,8 @@ public class PostService {
     private final PostRepository postRepository;
 
     private final PostImageRepository postImageRepository;
+
+    private final MemberRepository memberRepository;
 
     private final AwsS3Service awsS3Service;
 
@@ -54,7 +58,10 @@ public class PostService {
         return post.postToResponseDto();
     }
 
-    public List<PostResponseDto> findAll(Member member) {
+    public List<PostResponseDto> findAll(String memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RestApiException(MEMBER_NOT_FOUND));
+
         List<PostResponseDto> postResponseDtos = new ArrayList<>();
 
         member.getPosts().forEach(post ->

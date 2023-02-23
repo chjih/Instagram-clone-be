@@ -21,7 +21,7 @@ public class PostApiController {
 
     private final PostService postService;
 
-    @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "write", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<PostResponseDto> write(@Parameter(hidden = true) @LoggedInUser Member member,
                                 @RequestPart("images") List<MultipartFile> images,
                                 @RequestPart(value = "content", required = false) String content) {
@@ -32,15 +32,16 @@ public class PostApiController {
                 .body(postResponseDto);
     }
 
-    @GetMapping(value = "/")
-    public ResponseEntity<List<PostResponseDto>> readAll(@Parameter(hidden = true) @LoggedInUser Member member) {
-        List<PostResponseDto> postResponseDtos = postService.findAll(member);
+    @GetMapping(value = "readAll/{member_id}")
+    public ResponseEntity<List<PostResponseDto>> readAll(@Parameter(hidden = true) @LoggedInUser Member member,
+                                                         @PathVariable("member_id") String memberId) {
+        List<PostResponseDto> postResponseDtos = postService.findAll(memberId);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(postResponseDtos);
     }
 
-    @GetMapping(value = "/{post_id}")
+    @GetMapping(value = "read/{post_id}")
     public ResponseEntity<PostResponseDto> read(@Parameter(hidden = true) @LoggedInUser Member member,
                                                 @PathVariable("post_id") int postId) {
         PostResponseDto postResponseDto = postService.findByPostId(postId);
