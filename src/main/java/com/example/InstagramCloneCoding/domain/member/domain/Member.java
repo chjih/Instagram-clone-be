@@ -21,30 +21,30 @@ public class Member {
 
     @Id
     @Column(name = "user_id")
-    String userId;
+    private String userId;
 
     @Column(name = "email", nullable = false)
-    String email;
+    private String email;
 
     @Column(name = "password", nullable = false)
-    String password;
+    private String password;
 
     @Column(name = "profile_image")
-    String profileImage;
+    private String profileImage;
 
     @Column(name = "name", nullable = false)
-    String name;
+    private String name;
 
     @Column(name = "introduction")
-    String introduction;
+    private String introduction;
 
     @Column(name = "email_verified", nullable = false)
-    boolean emailVerified;
+    private boolean emailVerified;
 
     @Column(name = "last_home_access_time")
     LocalDateTime lastHomeAccessTime;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
 
     @OneToMany(mappedBy = "follower")

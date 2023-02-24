@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Getter
-@Setter
+
+@Getter @Setter
 public class PostResponseDto {
 
     private int postId;

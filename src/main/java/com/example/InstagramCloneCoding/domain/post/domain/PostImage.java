@@ -8,8 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "post_image")
-@Getter
-@Setter
+@Getter @Setter
 @NoArgsConstructor
 public class PostImage {
 
