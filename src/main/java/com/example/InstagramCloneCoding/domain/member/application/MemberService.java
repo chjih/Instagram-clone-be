@@ -4,7 +4,6 @@ import com.example.InstagramCloneCoding.domain.member.dao.MemberRepository;
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
 import com.example.InstagramCloneCoding.domain.member.dto.MemberRegisterDto;
 import com.example.InstagramCloneCoding.domain.member.dto.MemberResponseDto;
-import com.example.InstagramCloneCoding.domain.member.error.MemberErrorCode;
 import com.example.InstagramCloneCoding.global.error.RestApiException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -46,7 +45,7 @@ public class MemberService {
         String encodedPassword = passwordEncoder.encode(registerDto.getPassword());
 
         // 저장
-        member = Member.builder()
+        Member member = Member.builder()
                 .email(registerDto.getEmail())
                 .userId(registerDto.getUserId())
                 .name(registerDto.getName())
