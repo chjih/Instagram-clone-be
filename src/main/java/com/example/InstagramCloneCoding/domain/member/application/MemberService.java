@@ -46,7 +46,7 @@ public class MemberService {
         String encodedPassword = passwordEncoder.encode(registerDto.getPassword());
 
         // 저장
-        member = Member.builder()
+        Member member = Member.builder()
                 .email(registerDto.getEmail())
                 .userId(registerDto.getUserId())
                 .name(registerDto.getName())
