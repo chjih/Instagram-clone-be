@@ -4,6 +4,7 @@ import com.example.InstagramCloneCoding.domain.member.application.EmailConfirmSe
 import com.example.InstagramCloneCoding.domain.member.application.MemberService;
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
 import com.example.InstagramCloneCoding.domain.member.dto.MemberRegisterDto;
+import com.example.InstagramCloneCoding.domain.member.dto.MemberResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,15 +23,15 @@ public class MemberAccountsApiController {
     private final EmailConfirmService emailConfirmService;
 
     @PostMapping("emailsignup")
-    public ResponseEntity<String> register(@RequestBody MemberRegisterDto registerDto) {
+    public ResponseEntity<MemberResponseDto> register(@RequestBody MemberRegisterDto registerDto) {
         // 회원가입 (member 테이블에 추가)
-        Member member = memberService.register(registerDto);
+        MemberResponseDto memberResponseDto = memberService.register(registerDto);
 
         // 이메일 인증 메일 보내기
-        emailConfirmService.createEmailConfirmationToken(member.getUserId(), member.getEmail());
+        emailConfirmService.createEmailConfirmationToken(memberResponseDto.getUserId(), memberResponseDto.getEmail());
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(member.getUserId());
+                .body(memberResponseDto);
     }
 
     @GetMapping("confirm-email")

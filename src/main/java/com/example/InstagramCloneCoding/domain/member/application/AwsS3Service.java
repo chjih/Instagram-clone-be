@@ -2,6 +2,7 @@ package com.example.InstagramCloneCoding.domain.member.application;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.example.InstagramCloneCoding.global.error.RestApiException;
@@ -31,7 +32,7 @@ public class AwsS3Service {
         List<String> fileNameList = new ArrayList<>();
 
         multipartFiles.forEach(file -> {
-            String s3FileName = UUID.randomUUID() + "-" + file.getOriginalFilename(); // 이름 중복 피하기
+            String s3FileName = UUID.randomUUID().toString(); // 이름 중복 피하기
 
             try {
                 ObjectMetadata objMeta = new ObjectMetadata();
@@ -51,5 +52,9 @@ public class AwsS3Service {
         });
 
         return fileNameList;
+    }
+
+    public void deleteFile(String fileName) {
+        amazonS3.deleteObject(new DeleteObjectRequest(bucket, fileName));
     }
 }
