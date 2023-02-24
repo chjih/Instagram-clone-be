@@ -10,10 +10,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @Getter @Setter
 public class PostResponseDto {
 
     private int postId;
+
+    private String authorId;
 
     private String content;
 
@@ -23,8 +26,9 @@ public class PostResponseDto {
     private List<String> postImages;
 
     @Builder
-    public PostResponseDto(int postId, String content, LocalDateTime createdAt, List<PostImage> postImages) {
+    public PostResponseDto(int postId, String authorId, String content, LocalDateTime createdAt, List<PostImage> postImages) {
         this.postId = postId;
+        this.authorId = authorId;
         this.content = content;
         this.createdAt = createdAt;
         this.postImages = getPostImagesName(postImages);

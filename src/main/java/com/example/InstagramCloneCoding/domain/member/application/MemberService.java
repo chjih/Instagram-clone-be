@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 
 import static com.example.InstagramCloneCoding.domain.member.error.MemberErrorCode.*;
 
@@ -45,7 +46,13 @@ public class MemberService {
         String encodedPassword = passwordEncoder.encode(registerDto.getPassword());
 
         // 저장
-        Member member = new Member(registerDto.getEmail(), registerDto.getUserId(), registerDto.getName(), encodedPassword);
+        member = Member.builder()
+                .email(registerDto.getEmail())
+                .userId(registerDto.getUserId())
+                .name(registerDto.getName())
+                .password(encodedPassword)
+                .lastHomeAccessTime(LocalDateTime.now())
+                .build();
         memberRepository.save(member);
 
         return new MemberResponseDto(member.getUserId(), member.getEmail(), member.getName(),
@@ -60,15 +67,6 @@ public class MemberService {
         // 프로필 이미지 경로 업데이트
         member.setProfileImage(imagePath);
         memberRepository.save(member);
-    }
-
-    public Member findMember(String userId) {
-        Member member = memberRepository.findById(userId).orElse(null);
-        if (member == null) {
-            throw new RestApiException(MEMBER_NOT_FOUND);
-        }
-
-        return member;
     }
 }
 
