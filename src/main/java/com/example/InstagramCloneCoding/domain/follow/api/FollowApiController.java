@@ -1,8 +1,8 @@
 package com.example.InstagramCloneCoding.domain.follow.api;
 
+import com.example.InstagramCloneCoding.domain.follow.application.FollowFindService;
 import com.example.InstagramCloneCoding.domain.follow.application.FollowService;
 import com.example.InstagramCloneCoding.domain.follow.dto.FollowDto;
-import com.example.InstagramCloneCoding.domain.member.application.MemberService;
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
 import com.example.InstagramCloneCoding.global.common.annotation.LoggedInUser;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -19,20 +19,11 @@ import java.util.List;
 public class FollowApiController {
 
     private final FollowService followService;
-    private final MemberService memberService;
-
-    @GetMapping("/searchmember")
-    public ResponseEntity<String> searchMember(@RequestParam String userId) {
-        memberService.findMember(userId);
-
-        return ResponseEntity.status(HttpStatus.OK)
-                .body("member exist");
-    }
+    private final FollowFindService followFindService;
 
     @PostMapping("/follow")
     public ResponseEntity<String> follow(@Parameter(hidden = true) @LoggedInUser Member member, @RequestBody FollowDto followDto) {
-        Member following = memberService.findMember(followDto.getFollowingOrFollowerId());
-        followService.follow(member, following);
+        followService.follow(member, followDto.getFollowingOrFollowerId());
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body("following success!");
@@ -40,8 +31,7 @@ public class FollowApiController {
 
     @DeleteMapping("/unfollow")
     public ResponseEntity<String> unfollow(@Parameter(hidden = true) @LoggedInUser Member member, @RequestBody FollowDto followDto) {
-        Member following = memberService.findMember(followDto.getFollowingOrFollowerId());
-        followService.unfollow(member, following);
+        followService.unfollow(member, followDto.getFollowingOrFollowerId());
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body("unfollow success!");
@@ -49,28 +39,25 @@ public class FollowApiController {
 
     @GetMapping("/getfollowers")
     public ResponseEntity<List<String>> followers(@Parameter(hidden = true) @LoggedInUser Member member) {
-        List<Member> followers = followService.getFollowers(member);
-        List<String> followerIds = followService.getIds(followers);
+        List<String> followersId = followFindService.getFollowersId(member);
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(followerIds);
+                .body(followersId);
     }
 
     @GetMapping("/getfollowings")
     public ResponseEntity<List<String>> followings(@Parameter(hidden = true) @LoggedInUser Member member) {
-        List<Member> followings = followService.getFollowings(member);
-        List<String> followingIds = followService.getIds(followings);
+        List<String> followingsId = followFindService.getFollowingsId(member);
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(followingIds);
+                .body(followingsId);
     }
 
     @GetMapping("/getfollowbacks")
     public ResponseEntity<List<String>> followBack(@Parameter(hidden = true) @LoggedInUser Member member) {
-        List<Member> friends = followService.getFollowBacks(member);
-        List<String> friendIds = followService.getIds(friends);
+        List<String> friendsId = followFindService.getFollowingBacksId(member);
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(friendIds);
+                .body(friendsId);
     }
 }

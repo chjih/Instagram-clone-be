@@ -21,12 +21,10 @@ import java.util.List;
 public class HomeApiController {
 
     private final HomeService homeService;
-    private final FollowService followService;
 
     @GetMapping("/posts")
     public ResponseEntity<List<PostResponseDto>> getPosts(@Parameter(hidden = true) @LoggedInUser Member member) {
-        List<Member> followers = followService.getFollowers(member);
-        List<PostResponseDto> posts = homeService.getHomePosts(member, followers);
+        List<PostResponseDto> posts = homeService.getHomePosts(member);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(posts);

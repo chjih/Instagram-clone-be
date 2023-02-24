@@ -1,5 +1,6 @@
 package com.example.InstagramCloneCoding.domain.home.application;
 
+import com.example.InstagramCloneCoding.domain.member.application.MemberFindService;
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
 import com.example.InstagramCloneCoding.domain.post.dao.PostRepository;
 import com.example.InstagramCloneCoding.domain.post.domain.Post;
@@ -18,13 +19,17 @@ import java.util.stream.Collectors;
 public class HomeService {
 
     private final PostRepository postRepository;
+    private final MemberFindService memberFindService;
 
-    public List<PostResponseDto> getHomePosts(Member member, List<Member> followers){
-        List<Post> posts = postRepository.findByMemberInAndCreatedAtGreaterThanEqual(followers, member.getLastHomeAccessTime());
+    public List<PostResponseDto> getHomePosts(Member member) {
+        List<Post> posts = postRepository.findByMemberInAndCreatedAtGreaterThanEqual(
+                memberFindService.findFollowers(member),
+                member.getLastHomeAccessTime());
+
         member.setLastHomeAccessTime(LocalDateTime.now());
 
         return posts.stream()
-                .map(post->PostResponseDto.builder()
+                .map(post -> PostResponseDto.builder()
                         .postId(post.getPostId())
                         .authorId(post.getMember().getUserId())
                         .content(post.getContent())
