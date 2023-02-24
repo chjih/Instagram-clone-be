@@ -46,10 +46,11 @@ public class Post {
 
     public PostResponseDto postToResponseDto() {
        return PostResponseDto.builder()
-                .postId(postId)
-                .content(content)
-                .createdAt(createdAt)
-                .postImages(postImages)
-                .build();
+               .postId(postId)
+               .authorId(member.getUserId())
+               .content(content)
+               .createdAt(createdAt)
+               .postImages(postImages)
+               .build();
     }
 }
