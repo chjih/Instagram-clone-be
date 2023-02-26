@@ -37,6 +37,7 @@ public class AwsS3Service {
             try {
                 ObjectMetadata objMeta = new ObjectMetadata();
                 objMeta.setContentLength(file.getInputStream().available());
+                objMeta.setContentType(file.getContentType());
 
                 // s3 버킷에 업로드
                 amazonS3.putObject(
