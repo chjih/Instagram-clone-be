@@ -42,7 +42,6 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // 세션 사용x(jwt 사용)
 
         http.authorizeRequests()
-                .antMatchers(HttpMethod.OPTIONS, "/**/*").permitAll()   // CORS 에러 해결
                 .antMatchers("/auth/signin").permitAll() // 모든 요청 허가
                 .antMatchers("/auth/reissue").permitAll()
                 .antMatchers("/accounts/**").permitAll()
@@ -66,7 +65,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.addAllowedOrigin("http://127.0.0.1:5500");
+        configuration.addAllowedOriginPattern("*");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("GET");
         configuration.addAllowedMethod("POST");
