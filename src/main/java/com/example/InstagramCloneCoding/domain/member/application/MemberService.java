@@ -36,10 +36,10 @@ public class MemberService {
                     throw new RestApiException(EMAIL_ALREADY_REGISTERED);
                 });
 
-        // 비밀번호 확인
-        if (!registerDto.getPassword().equals(registerDto.getConfirmPassword())) {
-            throw new RestApiException(WRONG_CONFIRM_PASSWORD);
-        }
+//        // 비밀번호 확인
+//        if (!registerDto.getPassword().equals(registerDto.getConfirmPassword())) {
+//            throw new RestApiException(WRONG_CONFIRM_PASSWORD);
+//        }
 
         // 비밀번호 암호화
         String encodedPassword = passwordEncoder.encode(registerDto.getPassword());
