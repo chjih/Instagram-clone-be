@@ -61,3 +61,6 @@ springdoc:
     display-query-params-without-oauth2: true
     doc-expansion: none # tag, operation 펼치는 방식
   paths-to-match:
+
+my:
+  url: ${SERVER_URL}

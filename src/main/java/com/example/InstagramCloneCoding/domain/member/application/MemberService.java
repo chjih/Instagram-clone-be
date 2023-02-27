@@ -23,6 +23,8 @@ public class MemberService {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final EmailConfirmService emailConfirmService;
+
     public MemberResponseDto register(MemberRegisterDto registerDto) {
         // 아이디 중복 확인
         memberRepository.findById(registerDto.getUserId())
@@ -53,6 +55,9 @@ public class MemberService {
                 .lastHomeAccessTime(LocalDateTime.now())
                 .build();
         memberRepository.save(member);
+
+        // 이메일 인증 메일 보내기
+        emailConfirmService.createEmailConfirmationToken(member.getUserId(), member.getEmail());
 
         return new MemberResponseDto(member.getUserId(), member.getEmail(), member.getName(),
                 member.getProfileImage(), member.getIntroduction());

@@ -6,6 +6,7 @@ import com.example.InstagramCloneCoding.domain.member.domain.EmailConfirmationTo
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
 import com.example.InstagramCloneCoding.global.error.RestApiException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,9 @@ public class EmailConfirmService {
 
     private final EmailSenderService emailSenderService;
 
+    @Value("${server.url}")
+    private String serverUrl;
+
     public String createEmailConfirmationToken(String userId, String receiverEmail) {
         EmailConfirmationToken token = EmailConfirmationToken.createEmailConfirmationToken(userId);
         emailConfirmationTokenRepository.save(token);
@@ -33,7 +37,7 @@ public class EmailConfirmService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(receiverEmail);
         message.setSubject("인스타그램(클론) 회원가입 이메일 인증");
-        message.setText("http://localhost:8080/accounts/confirm-email?token=" + token.getId());
+        message.setText(serverUrl + "accounts/confirm-email?token=" + token.getId());
         emailSenderService.sendEmail(message);
 
         return token.getId();
