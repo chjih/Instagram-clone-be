@@ -29,13 +29,7 @@ public class HomeService {
         member.setLastHomeAccessTime(LocalDateTime.now());
 
         return posts.stream()
-                .map(post -> PostResponseDto.builder()
-                        .postId(post.getPostId())
-                        .authorId(post.getMember().getUserId())
-                        .content(post.getContent())
-                        .createdAt(post.getCreatedAt())
-                        .postImages(post.getPostImages())
-                        .build())
+                .map(Post::postToResponseDto)
                 .collect(Collectors.toList());
     }
 }

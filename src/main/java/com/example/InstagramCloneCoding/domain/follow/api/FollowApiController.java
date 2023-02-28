@@ -4,6 +4,7 @@ import com.example.InstagramCloneCoding.domain.follow.application.FollowFindServ
 import com.example.InstagramCloneCoding.domain.follow.application.FollowService;
 import com.example.InstagramCloneCoding.domain.follow.dto.FollowDto;
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
+import com.example.InstagramCloneCoding.domain.member.dto.MemberResponseDto;
 import com.example.InstagramCloneCoding.global.common.annotation.LoggedInUser;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
@@ -38,24 +39,24 @@ public class FollowApiController {
     }
 
     @GetMapping("/getfollowers")
-    public ResponseEntity<List<String>> followers(@Parameter(hidden = true) @LoggedInUser Member member) {
-        List<String> followersId = followFindService.getFollowersId(member);
+    public ResponseEntity<List<MemberResponseDto>> followers(@Parameter(hidden = true) @LoggedInUser Member member) {
+        List<MemberResponseDto> followersId = followFindService.getFollowersId(member);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(followersId);
     }
 
     @GetMapping("/getfollowings")
-    public ResponseEntity<List<String>> followings(@Parameter(hidden = true) @LoggedInUser Member member) {
-        List<String> followingsId = followFindService.getFollowingsId(member);
+    public ResponseEntity<List<MemberResponseDto>> followings(@Parameter(hidden = true) @LoggedInUser Member member) {
+        List<MemberResponseDto> followingsId = followFindService.getFollowingsId(member);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(followingsId);
     }
 
     @GetMapping("/getfollowbacks")
-    public ResponseEntity<List<String>> followBack(@Parameter(hidden = true) @LoggedInUser Member member) {
-        List<String> friendsId = followFindService.getFollowingBacksId(member);
+    public ResponseEntity<List<MemberResponseDto>> followBack(@Parameter(hidden = true) @LoggedInUser Member member) {
+        List<MemberResponseDto> friendsId = followFindService.getFollowingBacksId(member);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(friendsId);

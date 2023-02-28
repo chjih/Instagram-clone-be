@@ -1,6 +1,7 @@
 package com.example.InstagramCloneCoding.domain.member.domain;
 
 import com.example.InstagramCloneCoding.domain.follow.domain.Follow;
+import com.example.InstagramCloneCoding.domain.member.dto.MemberResponseDto;
 import com.example.InstagramCloneCoding.domain.post.domain.Post;
 import lombok.Builder;
 import lombok.Getter;
@@ -47,10 +48,10 @@ public class Member {
     @OneToMany(mappedBy = "member", orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "follower")
+    @OneToMany(mappedBy = "follower", orphanRemoval = true)
     private List<Follow> followings = new ArrayList<>();
 
-    @OneToMany(mappedBy = "following")
+    @OneToMany(mappedBy = "following", orphanRemoval = true)
     private List<Follow> followers = new ArrayList<>();
 
     @Builder
@@ -61,5 +62,9 @@ public class Member {
         this.password = password;
         this.emailVerified = false;
         this.lastHomeAccessTime = lastHomeAccessTime;
+    }
+
+    public MemberResponseDto memberToResponseDto(){
+        return new MemberResponseDto(userId, email, name, profileImage, introduction);
     }
 }

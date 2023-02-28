@@ -59,8 +59,7 @@ public class MemberService {
         // 이메일 인증 메일 보내기
         emailConfirmService.createEmailConfirmationToken(member.getUserId(), member.getEmail());
 
-        return new MemberResponseDto(member.getUserId(), member.getEmail(), member.getName(),
-                member.getProfileImage(), member.getIntroduction());
+        return member.memberToResponseDto();
     }
 
     public void changeProfileImage(String userId, String imagePath) {
