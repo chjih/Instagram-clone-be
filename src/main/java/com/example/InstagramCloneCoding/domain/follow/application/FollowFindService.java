@@ -2,6 +2,7 @@ package com.example.InstagramCloneCoding.domain.follow.application;
 
 import com.example.InstagramCloneCoding.domain.member.application.MemberFindService;
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
+import com.example.InstagramCloneCoding.domain.member.dto.MemberResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,27 +17,27 @@ public class FollowFindService {
 
     private final MemberFindService memberFindService;
 
-    public List<String> getFollowersId(Member member) {
+    public List<MemberResponseDto> getFollowersId(Member member) {
         List<Member> followers = memberFindService.findFollowers(member);
 
         return getIds(followers);
     }
 
-    public List<String> getFollowingsId(Member member) {
+    public List<MemberResponseDto> getFollowingsId(Member member) {
         List<Member> followings = memberFindService.findFollowings(member);
 
         return getIds(followings);
     }
 
-    public List<String> getFollowingBacksId(Member member) {
+    public List<MemberResponseDto> getFollowingBacksId(Member member) {
         List<Member> friends = memberFindService.findFollowBacks(member);
 
         return getIds(friends);
     }
 
-    private List<String> getIds(List<Member> friends) {
-        return friends.stream()
-                .map(Member::getUserId)
+    private List<MemberResponseDto> getIds(List<Member> members) {
+        return members.stream()
+                .map(Member::MemberToResponseDto)
                 .collect(Collectors.toList());
     }
 }
