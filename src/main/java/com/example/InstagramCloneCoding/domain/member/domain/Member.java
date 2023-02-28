@@ -1,6 +1,7 @@
 package com.example.InstagramCloneCoding.domain.member.domain;
 
 import com.example.InstagramCloneCoding.domain.follow.domain.Follow;
+import com.example.InstagramCloneCoding.domain.member.dto.MemberResponseDto;
 import com.example.InstagramCloneCoding.domain.post.domain.Post;
 import lombok.Builder;
 import lombok.Getter;
@@ -61,5 +62,9 @@ public class Member {
         this.password = password;
         this.emailVerified = false;
         this.lastHomeAccessTime = lastHomeAccessTime;
+    }
+
+    public MemberResponseDto MemberToResponseDto(){
+        return new MemberResponseDto(userId, email, name, profileImage, introduction);
     }
 }
