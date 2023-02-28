@@ -48,10 +48,10 @@ public class Member {
     @OneToMany(mappedBy = "member", orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "follower")
+    @OneToMany(mappedBy = "follower", orphanRemoval = true)
     private List<Follow> followings = new ArrayList<>();
 
-    @OneToMany(mappedBy = "following")
+    @OneToMany(mappedBy = "following", orphanRemoval = true)
     private List<Follow> followers = new ArrayList<>();
 
     @Builder
