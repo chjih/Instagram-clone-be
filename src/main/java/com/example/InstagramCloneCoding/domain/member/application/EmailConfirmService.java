@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.Random;
 
 import static com.example.InstagramCloneCoding.domain.member.error.MemberErrorCode.MEMBER_NOT_FOUND;
 import static com.example.InstagramCloneCoding.domain.member.error.MemberErrorCode.TOKEN_NOT_FOUND;
@@ -56,5 +57,24 @@ public class EmailConfirmService {
         memberRepository.save(member);
 
         return member;
+    }
+
+    public String createEmailAuthenticationCode(String receiverEmail) {
+        // 랜덤 인증 코드 생성
+        String code;
+        Random random = new Random();
+        StringBuffer codeBuffer = new StringBuffer();
+        for (int i = 0; i < 6; i++)
+            codeBuffer.append(random.nextInt(9));
+        code = codeBuffer.toString();
+
+        // 메일 보내기
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(receiverEmail);
+        message.setSubject("인스타그램(클론) 회원가입 이메일 인증");
+        message.setText("이메일 인증 코드는 " + code + " 입니다.");
+        emailSenderService.sendEmail(message);
+
+        return code;
     }
 }

@@ -55,7 +55,7 @@ public class Member {
     private List<Follow> followers = new ArrayList<>();
 
     @Builder
-    public Member(String email, String userId, String name, String password, LocalDateTime lastHomeAccessTime) {
+    public Member(String email, String userId, String name, String password, LocalDateTime lastHomeAccessTime, String introduction) {
         this.email = email;
         this.userId = userId;
         this.name = name;
