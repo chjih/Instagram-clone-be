@@ -37,7 +37,7 @@ public class FollowFindService {
 
     private List<MemberResponseDto> getIds(List<Member> members) {
         return members.stream()
-                .map(Member::MemberToResponseDto)
+                .map(Member::memberToResponseDto)
                 .collect(Collectors.toList());
     }
 }

@@ -64,7 +64,7 @@ public class Member {
         this.lastHomeAccessTime = lastHomeAccessTime;
     }
 
-    public MemberResponseDto MemberToResponseDto(){
+    public MemberResponseDto memberToResponseDto(){
         return new MemberResponseDto(userId, email, name, profileImage, introduction);
     }
 }
