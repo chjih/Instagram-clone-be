@@ -55,12 +55,12 @@ public class Member {
     private List<Follow> followers = new ArrayList<>();
 
     @Builder
-    public Member(String email, String userId, String name, String password, LocalDateTime lastHomeAccessTime, String introduction) {
+    public Member(String email, String userId, String name, String password, LocalDateTime lastHomeAccessTime) {
         this.email = email;
         this.userId = userId;
         this.name = name;
         this.password = password;
-        this.emailVerified = false;
+        this.emailVerified = true;
         this.lastHomeAccessTime = lastHomeAccessTime;
     }
 
