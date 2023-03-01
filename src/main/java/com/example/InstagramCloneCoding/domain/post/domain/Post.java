@@ -56,6 +56,8 @@ public class Post {
                 .content(content)
                 .createdAt(createdAt)
                 .postImages(postImages)
+                .likes(likes.size())
+                .iLiked(likes.contains(new PostLike(member, this)))
                 .build();
     }
 }

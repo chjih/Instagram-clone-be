@@ -29,7 +29,7 @@ public class HomeService {
         member.setLastHomeAccessTime(LocalDateTime.now());
 
         return posts.stream()
-                .map(Post::postToResponseDto)
+                .map(post->post.postToResponseDto(member))
                 .collect(Collectors.toList());
     }
 }

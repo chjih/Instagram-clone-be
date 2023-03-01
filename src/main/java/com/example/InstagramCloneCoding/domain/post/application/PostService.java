@@ -1,7 +1,6 @@
 package com.example.InstagramCloneCoding.domain.post.application;
 
 import com.example.InstagramCloneCoding.domain.member.application.AwsS3Service;
-import com.example.InstagramCloneCoding.domain.member.dao.MemberRepository;
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
 import com.example.InstagramCloneCoding.domain.post.dao.PostImageRepository;
 import com.example.InstagramCloneCoding.domain.post.dao.PostRepository;
@@ -14,10 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.InstagramCloneCoding.domain.member.error.MemberErrorCode.MEMBER_NOT_FOUND;
 import static com.example.InstagramCloneCoding.domain.post.error.PostErrorCode.POST_NOT_FOUND;
 import static com.example.InstagramCloneCoding.global.error.CommonErrorCode.FORBIDDEN;
 
@@ -27,11 +24,7 @@ import static com.example.InstagramCloneCoding.global.error.CommonErrorCode.FORB
 public class PostService {
 
     private final PostRepository postRepository;
-
     private final PostImageRepository postImageRepository;
-
-    private final MemberRepository memberRepository;
-
     private final AwsS3Service awsS3Service;
 
     public PostResponseDto uploadPost(Member member, String content, List<MultipartFile> images) {
@@ -48,27 +41,7 @@ public class PostService {
             postImageRepository.save(postImage);
         });
 
-        return post.postToResponseDto();
-    }
-
-    public PostResponseDto findByPostId(int postId) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new RestApiException(POST_NOT_FOUND));
-
-        return post.postToResponseDto();
-    }
-
-    public List<PostResponseDto> findAll(String memberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RestApiException(MEMBER_NOT_FOUND));
-
-        List<PostResponseDto> postResponseDtos = new ArrayList<>();
-
-        member.getPosts().forEach(post ->
-                postResponseDtos.add(post.postToResponseDto())
-        );
-
-        return postResponseDtos;
+        return post.postToResponseDto(member);
     }
 
     public void deletePost(Member member, int postId) {
@@ -81,7 +54,7 @@ public class PostService {
 
         // s3 버킷에서 이미지 삭제
         post.getPostImages().forEach(postImage ->
-            awsS3Service.deleteFile(postImage.getPostImageId().substring(59)));
+                awsS3Service.deleteFile(postImage.getPostImageId().substring(59)));
 
         // 포스트 삭제
         postRepository.deleteById(postId);
