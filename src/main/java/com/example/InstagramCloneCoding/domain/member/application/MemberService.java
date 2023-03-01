@@ -30,15 +30,27 @@ public class MemberService {
 
     private final AwsS3Service awsS3Service;
 
-    public MemberResponseDto saveMember(MemberRegisterDto registerDto) {
+    public MemberResponseDto saveMember(MemberRegisterDto memberRegisterDto) {
+        // 아이디 중복 확인
+        memberRepository.findById(memberRegisterDto.getUserId())
+                .ifPresent(member -> {
+                    throw new RestApiException(ID_ALREADY_EXISTS);
+                });
+
+        // 이메일 중복 확인
+        memberRepository.findByEmail(memberRegisterDto.getEmail())
+                .ifPresent(member -> {
+                    throw new RestApiException(EMAIL_ALREADY_REGISTERED);
+                });
+
         // 비밀번호 암호화
-        String encodedPassword = passwordEncoder.encode(registerDto.getPassword());
+        String encodedPassword = passwordEncoder.encode(memberRegisterDto.getPassword());
 
         // 저장
         Member member = Member.builder()
-                .email(registerDto.getEmail())
-                .userId(registerDto.getUserId())
-                .name(registerDto.getName())
+                .email(memberRegisterDto.getEmail())
+                .userId(memberRegisterDto.getUserId())
+                .name(memberRegisterDto.getName())
                 .password(encodedPassword)
                 .lastHomeAccessTime(LocalDateTime.now())
                 .build();
