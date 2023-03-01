@@ -81,6 +81,12 @@ public class MemberService {
     public MemberResponseDto changeProfile(Member member, MemberEditDto memberEditDto) {
         // 이메일 변경되었는지 확인 -> 변경되었으면 인증용 메일 보내기
         if (!member.getEmail().equals(memberEditDto.getEmail())) {
+            // 이메일 중복 확인
+            memberRepository.findByEmail(memberEditDto.getEmail())
+                    .ifPresent(m -> {
+                        throw new RestApiException(EMAIL_ALREADY_REGISTERED);
+                    });
+
             member.setEmailVerified(false);
             member.setEmail(memberEditDto.getEmail());
             emailConfirmService.createEmailConfirmationToken(member.getUserId(), member.getEmail());
@@ -89,8 +95,6 @@ public class MemberService {
         // 이름과 소개글 변경
         member.setName(memberEditDto.getName());
         member.setIntroduction(memberEditDto.getIntroduction());
-
-        memberRepository.save(member);
 
         return member.memberToResponseDto();
     }
