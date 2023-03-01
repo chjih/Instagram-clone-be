@@ -81,7 +81,7 @@ public class PostService {
 
         // s3 버킷에서 이미지 삭제
         post.getPostImages().forEach(postImage ->
-            awsS3Service.deleteFile(postImage.getPostImageId().substring(59)));
+            awsS3Service.deleteFile(postImage.getPostImageId()));
 
         // 포스트 삭제
         postRepository.deleteById(postId);
