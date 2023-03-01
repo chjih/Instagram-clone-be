@@ -39,10 +39,4 @@ public class MemberFindService {
                 .map(Follow::getFollowing)
                 .collect(Collectors.toList());
     }
-
-    public List<Member> findFollowBacks(Member member) {
-        List<Member> followBackList = findFollowings(member);
-        followBackList.retainAll(findFollowers(member));
-        return followBackList;
-    }
 }

@@ -38,27 +38,19 @@ public class FollowApiController {
                 .body("unfollow success!");
     }
 
-    @GetMapping("/getfollowers")
-    public ResponseEntity<List<MemberResponseDto>> followers(@Parameter(hidden = true) @LoggedInUser Member member) {
-        List<MemberResponseDto> followersId = followFindService.getFollowersId(member);
+    @GetMapping("/getfollowers/{member_id}")
+    public ResponseEntity<List<MemberResponseDto>> followers(@PathVariable("member_id") String memberId) {
+        List<MemberResponseDto> followersId = followFindService.getFollowers(memberId);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(followersId);
     }
 
-    @GetMapping("/getfollowings")
-    public ResponseEntity<List<MemberResponseDto>> followings(@Parameter(hidden = true) @LoggedInUser Member member) {
-        List<MemberResponseDto> followingsId = followFindService.getFollowingsId(member);
+    @GetMapping("/getfollowings/{member_id}")
+    public ResponseEntity<List<MemberResponseDto>> followings(@PathVariable("member_id") String memberId) {
+        List<MemberResponseDto> followingsId = followFindService.getFollowings(memberId);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(followingsId);
-    }
-
-    @GetMapping("/getfollowbacks")
-    public ResponseEntity<List<MemberResponseDto>> followBack(@Parameter(hidden = true) @LoggedInUser Member member) {
-        List<MemberResponseDto> friendsId = followFindService.getFollowingBacksId(member);
-
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(friendsId);
     }
 }

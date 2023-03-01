@@ -17,26 +17,20 @@ public class FollowFindService {
 
     private final MemberFindService memberFindService;
 
-    public List<MemberResponseDto> getFollowersId(Member member) {
+    public List<MemberResponseDto> getFollowers(String memberId) {
+        Member member = memberFindService.findMember(memberId);
         List<Member> followers = memberFindService.findFollowers(member);
 
-        return getIds(followers);
+        return followers.stream()
+                .map(Member::memberToResponseDto)
+                .collect(Collectors.toList());
     }
 
-    public List<MemberResponseDto> getFollowingsId(Member member) {
+    public List<MemberResponseDto> getFollowings(String memberId) {
+        Member member = memberFindService.findMember(memberId);
         List<Member> followings = memberFindService.findFollowings(member);
 
-        return getIds(followings);
-    }
-
-    public List<MemberResponseDto> getFollowingBacksId(Member member) {
-        List<Member> friends = memberFindService.findFollowBacks(member);
-
-        return getIds(friends);
-    }
-
-    private List<MemberResponseDto> getIds(List<Member> members) {
-        return members.stream()
+        return followings.stream()
                 .map(Member::memberToResponseDto)
                 .collect(Collectors.toList());
     }
