@@ -2,6 +2,7 @@ package com.example.InstagramCloneCoding.domain.post.domain;
 
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
 import com.example.InstagramCloneCoding.domain.post.dto.PostResponseDto;
+import com.example.InstagramCloneCoding.domain.postlike.domain.PostLike;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,7 +16,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "post")
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Post {
@@ -25,7 +27,7 @@ public class Post {
     @Column(name = "post_id", nullable = false)
     private int postId;
 
-    @Column(name = "content", nullable = true)
+    @Column(name = "content")
     private String content;
 
     @CreatedDate
@@ -39,18 +41,21 @@ public class Post {
     @OneToMany(mappedBy = "post", orphanRemoval = true)
     private List<PostImage> postImages = new ArrayList<>();
 
+    @OneToMany(mappedBy = "post", orphanRemoval = true)
+    private List<PostLike> likes = new ArrayList<>();
+
     public Post(Member member, String content) {
         this.member = member;
         this.content = content;
     }
 
-    public PostResponseDto postToResponseDto() {
-       return PostResponseDto.builder()
-               .postId(postId)
-               .authorId(member.getUserId())
-               .content(content)
-               .createdAt(createdAt)
-               .postImages(postImages)
-               .build();
+    public PostResponseDto postToResponseDto(Member member) {
+        return PostResponseDto.builder()
+                .postId(postId)
+                .authorId(member.getUserId())
+                .content(content)
+                .createdAt(createdAt)
+                .postImages(postImages)
+                .build();
     }
 }
