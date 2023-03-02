@@ -41,7 +41,7 @@ public class PostService {
             postImageRepository.save(postImage);
         });
 
-        return post.postToResponseDto(member);
+        return post.postToResponseDto();
     }
 
     public void deletePost(Member member, int postId) {

@@ -5,6 +5,7 @@ import com.example.InstagramCloneCoding.domain.member.domain.Member;
 import com.example.InstagramCloneCoding.domain.post.dao.PostRepository;
 import com.example.InstagramCloneCoding.domain.post.domain.Post;
 import com.example.InstagramCloneCoding.domain.post.dto.PostResponseDto;
+import com.example.InstagramCloneCoding.domain.postlike.dao.PostLikeRepository;
 import com.example.InstagramCloneCoding.global.error.RestApiException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,12 +24,13 @@ public class PostFindService {
 
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
+    private final PostLikeRepository postLikeRepository;
 
     public PostResponseDto findByPostId(int postId, Member member) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RestApiException(POST_NOT_FOUND));
 
-        return post.postToResponseDto(member);
+        return toPostResponseDto(post, member);
     }
 
     public List<PostResponseDto> findAll(String memberId, Member member) {
@@ -37,7 +39,16 @@ public class PostFindService {
 
         return author.getPosts()
                 .stream()
-                .map(post -> post.postToResponseDto(member))
+                .map(post -> toPostResponseDto(post, member))
                 .collect(Collectors.toList());
+    }
+
+    private PostResponseDto toPostResponseDto(Post post, Member member) {
+        PostResponseDto postResponseDto = post.postToResponseDto();
+
+        boolean iLiked = postLikeRepository.findByMemberAndPost(member, post).isPresent();
+        postResponseDto.setILiked(iLiked);
+
+        return postResponseDto;
     }
 }

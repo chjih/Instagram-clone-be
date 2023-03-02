@@ -49,7 +49,7 @@ public class Post {
         this.content = content;
     }
 
-    public PostResponseDto postToResponseDto(Member member) {
+    public PostResponseDto postToResponseDto() {
         return PostResponseDto.builder()
                 .postId(postId)
                 .authorId(author.getUserId())
@@ -57,7 +57,6 @@ public class Post {
                 .createdAt(createdAt)
                 .postImages(postImages)
                 .likes(likes.size())
-                .iLiked(likes.contains(new PostLike(member, this)))
                 .build();
     }
 }

@@ -31,14 +31,14 @@ public class PostResponseDto {
 
     @Builder
     public PostResponseDto(int postId, String authorId, String content, LocalDateTime createdAt,
-                           List<PostImage> postImages, int likes, boolean iLiked) {
+                           List<PostImage> postImages, int likes) {
         this.postId = postId;
         this.authorId = authorId;
         this.content = content;
         this.createdAt = createdAt;
         this.postImages = getPostImagesName(postImages);
         this.likes = likes;
-        this.iLiked = iLiked;
+        this.iLiked = false;
     }
 
     private List<String> getPostImagesName(List<PostImage> postImages) {

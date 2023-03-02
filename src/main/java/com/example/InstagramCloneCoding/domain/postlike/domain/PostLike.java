@@ -33,14 +33,4 @@ public class PostLike {
         this.member = member;
         this.post = post;
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof PostLike)) {
-            return false;
-        }
-        PostLike object = (PostLike) obj;
-
-        return Objects.equals(object.getPost(), this.post) && Objects.equals(object.getMember(), this.member);
-    }
 }
