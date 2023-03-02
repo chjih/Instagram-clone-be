@@ -7,8 +7,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -17,22 +17,11 @@ public class PostLikeApiController {
 
     private final PostLikeService postLikeService;
 
-    @PostMapping("/likepost")
-    public ResponseEntity<String> likePost(@Parameter(hidden = true) @LoggedInUser Member member,
-                                           @RequestParam("postid") int postId) {
-        postLikeService.likePost(member, postId);
+    @PostMapping("/post/{post_id}/like")
+    public ResponseEntity<String> togglePostLike(@Parameter(hidden = true) @LoggedInUser Member member,
+                                                 @PathVariable("postid") int postId) {
+        postLikeService.togglePostLike(member, postId);
 
-        return ResponseEntity.status(HttpStatus.OK)
-                .body("post like success!");
-    }
-
-    @PostMapping("/unlikepost")
-    public ResponseEntity<String> unlikePost(@Parameter(hidden = true) @LoggedInUser Member member,
-                                             @RequestParam("postid") int postId) {
-        postLikeService.unlikePost(member, postId);
-
-        return ResponseEntity.status(HttpStatus.OK)
-                .body("post like cancel success!");
-
+        return ResponseEntity.status(HttpStatus.OK).body("post like toggle success!");
     }
 }
