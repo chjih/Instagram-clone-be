@@ -19,15 +19,15 @@ public class PostLike {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_like_id", nullable = false)
-    int postLikeId;
+    private int postLikeId;
 
     @JoinColumn(name = "user_id", nullable = false)
     @ManyToOne
-    Member member;
+    private Member member;
 
     @JoinColumn(name = "post_id", nullable = false)
     @ManyToOne
-    Post post;
+    private Post post;
 
     public PostLike(Member member, Post post) {
         this.member = member;
