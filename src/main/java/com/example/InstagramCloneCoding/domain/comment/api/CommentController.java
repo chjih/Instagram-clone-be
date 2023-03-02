@@ -27,4 +27,12 @@ public class CommentController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(commentResponseDto);
     }
+
+    @DeleteMapping("{comment_id}")
+    public ResponseEntity delete(@Parameter(hidden = true) @LoggedInUser Member member,
+                                 @PathVariable("comment_id") int commentId) {
+        commentService.deleteComment(member, commentId);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }

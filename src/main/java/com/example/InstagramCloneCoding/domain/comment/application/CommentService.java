@@ -18,11 +18,13 @@ import java.util.List;
 import static com.example.InstagramCloneCoding.domain.comment.error.CommentErrorCode.COMMENT_NOT_FOUND;
 import static com.example.InstagramCloneCoding.domain.comment.error.CommentErrorCode.UNAVAILABLE_COMMENT_REQUEST;
 import static com.example.InstagramCloneCoding.domain.post.error.PostErrorCode.POST_NOT_FOUND;
+import static com.example.InstagramCloneCoding.global.error.CommonErrorCode.FORBIDDEN;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class CommentService {
+public class
+CommentService {
 
     private final PostRepository postRepository;
 
@@ -68,5 +70,24 @@ public class CommentService {
         commentRepository.save(comment);
 
         return comment.commentToResponseDto();
+    }
+
+    public void deleteComment(Member member, int commentId) {
+        Comment deleteComment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new RestApiException(COMMENT_NOT_FOUND));
+
+        // 댓글 작성자인지 확인
+        if (!deleteComment.getMember().equals(member))
+            throw new RestApiException(FORBIDDEN);
+
+        // 댓글인 경우 해당 댓글에 속하는 대댓글까지 삭제
+        if (deleteComment.getRefStep() == 0) {
+            List<Comment> comments = commentRepository.findByRef(deleteComment.getRef());
+            comments.forEach(commentRepository::delete);
+        }
+        // 대댓글인 경우 해당 대댓글만 삭제
+        else {
+            commentRepository.delete(deleteComment);
+        }
     }
 }

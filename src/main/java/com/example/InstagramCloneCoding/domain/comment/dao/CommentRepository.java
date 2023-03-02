@@ -11,4 +11,6 @@ import java.util.List;
 public interface CommentRepository extends JpaRepository<Comment, Integer> {
 
     List<Comment> findByPostAndRef(Post post, int ref);
+
+    List<Comment> findByRef(int ref);
 }
