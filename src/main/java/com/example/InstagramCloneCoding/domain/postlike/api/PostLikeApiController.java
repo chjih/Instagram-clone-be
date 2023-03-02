@@ -19,7 +19,7 @@ public class PostLikeApiController {
 
     @PostMapping("/post/{post_id}/like")
     public ResponseEntity<String> togglePostLike(@Parameter(hidden = true) @LoggedInUser Member member,
-                                                 @PathVariable("postid") int postId) {
+                                                 @PathVariable("post_id") int postId) {
         postLikeService.togglePostLike(member, postId);
 
         return ResponseEntity.status(HttpStatus.OK).body("post like toggle success!");

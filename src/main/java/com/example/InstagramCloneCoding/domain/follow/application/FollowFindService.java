@@ -1,6 +1,6 @@
 package com.example.InstagramCloneCoding.domain.follow.application;
 
-import com.example.InstagramCloneCoding.domain.member.application.MemberFindService;
+import com.example.InstagramCloneCoding.domain.follow.dao.FollowRepository;
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
 import com.example.InstagramCloneCoding.domain.member.dto.MemberResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -15,11 +15,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class FollowFindService {
 
-    private final MemberFindService memberFindService;
+    private final FollowRepository followRepository;
 
     public List<MemberResponseDto> getFollowers(String memberId) {
-        Member member = memberFindService.findMember(memberId);
-        List<Member> followers = memberFindService.findFollowers(member);
+        List<Member> followers = followRepository.findFollowersById(memberId);
 
         return followers.stream()
                 .map(Member::memberToResponseDto)
@@ -27,8 +26,7 @@ public class FollowFindService {
     }
 
     public List<MemberResponseDto> getFollowings(String memberId) {
-        Member member = memberFindService.findMember(memberId);
-        List<Member> followings = memberFindService.findFollowings(member);
+        List<Member> followings = followRepository.findFollowingsById(memberId);
 
         return followings.stream()
                 .map(Member::memberToResponseDto)

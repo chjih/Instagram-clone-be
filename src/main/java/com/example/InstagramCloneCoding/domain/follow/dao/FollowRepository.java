@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface FollowRepository extends JpaRepository<Follow, Integer> {
+public interface FollowRepository extends JpaRepository<Follow, Integer>, FollowRepositoryCustom {
 
     Optional<Follow> findByFollowerAndFollowing(Member follower, Member following);
 }

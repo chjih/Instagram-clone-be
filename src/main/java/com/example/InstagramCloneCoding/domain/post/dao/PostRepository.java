@@ -11,5 +11,5 @@ import java.util.List;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer> {
 
-    List<Post> findByMemberInAndCreatedAtGreaterThanEqual(List<Member> followers, LocalDateTime accessTime);
+    List<Post> findByAuthorInAndCreatedAtGreaterThanEqual(List<Member> authors, LocalDateTime accessTime);
 }

@@ -2,7 +2,6 @@ package com.example.InstagramCloneCoding.domain.follow.api;
 
 import com.example.InstagramCloneCoding.domain.follow.application.FollowFindService;
 import com.example.InstagramCloneCoding.domain.follow.application.FollowService;
-import com.example.InstagramCloneCoding.domain.follow.dto.FollowDto;
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
 import com.example.InstagramCloneCoding.domain.member.dto.MemberResponseDto;
 import com.example.InstagramCloneCoding.global.common.annotation.LoggedInUser;
@@ -23,16 +22,18 @@ public class FollowApiController {
     private final FollowFindService followFindService;
 
     @PostMapping("/follow")
-    public ResponseEntity<String> follow(@Parameter(hidden = true) @LoggedInUser Member member, @RequestBody FollowDto followDto) {
-        followService.follow(member, followDto.getFollowingOrFollowerId());
+    public ResponseEntity<String> follow(@Parameter(hidden = true) @LoggedInUser Member member,
+                                         @RequestParam(name = "memberid") String followingId) {
+        followService.follow(member, followingId);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body("following success!");
     }
 
     @DeleteMapping("/unfollow")
-    public ResponseEntity<String> unfollow(@Parameter(hidden = true) @LoggedInUser Member member, @RequestBody FollowDto followDto) {
-        followService.unfollow(member, followDto.getFollowingOrFollowerId());
+    public ResponseEntity<String> unfollow(@Parameter(hidden = true) @LoggedInUser Member member,
+                                           @RequestParam String followerId) {
+        followService.unfollow(member, followerId);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body("unfollow success!");

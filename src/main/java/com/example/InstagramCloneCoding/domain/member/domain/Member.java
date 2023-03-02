@@ -46,7 +46,7 @@ public class Member {
     @Column(name = "last_home_access_time")
     LocalDateTime lastHomeAccessTime;
 
-    @OneToMany(mappedBy = "member", orphanRemoval = true)
+    @OneToMany(mappedBy = "author", orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
 
     @OneToMany(mappedBy = "follower", orphanRemoval = true)
