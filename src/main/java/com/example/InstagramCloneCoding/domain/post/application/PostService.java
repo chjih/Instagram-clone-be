@@ -49,7 +49,7 @@ public class PostService {
                 .orElseThrow(() -> new RestApiException(POST_NOT_FOUND));
 
         // 포스트 작성자인지 확인
-        if (!post.getMember().equals(member))
+        if (!post.getAuthor().equals(member))
             throw new RestApiException(FORBIDDEN);
 
         // s3 버킷에서 이미지 삭제
