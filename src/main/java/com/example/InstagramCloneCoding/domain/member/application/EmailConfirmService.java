@@ -31,7 +31,7 @@ public class EmailConfirmService {
     @Value("${server.url}")
     private String serverUrl;
 
-    public String createEmailConfirmationToken(String userId, String receiverEmail) {
+    public void createEmailConfirmationToken(String userId, String receiverEmail) {
         EmailConfirmationToken token = EmailConfirmationToken.createEmailConfirmationToken(userId);
         emailConfirmationTokenRepository.save(token);
 
@@ -40,11 +40,9 @@ public class EmailConfirmService {
         message.setSubject("인스타그램(클론) 회원가입 이메일 인증");
         message.setText(serverUrl + "accounts/confirm-email?token=" + token.getId());
         emailSenderService.sendEmail(message);
-
-        return token.getId();
     }
 
-    public Member confirmEmail(String token) {
+    public void confirmEmail(String token) {
         EmailConfirmationToken findToken = emailConfirmationTokenRepository
                 .findByIdAndExpirationDateAfterAndExpired(token, LocalDateTime.now(), false)
                 .orElseThrow(() -> new RestApiException(TOKEN_NOT_FOUND));
@@ -55,18 +53,16 @@ public class EmailConfirmService {
         member.setEmailVerified(true);
         emailConfirmationTokenRepository.save(findToken);
         memberRepository.save(member);
-
-        return member;
     }
 
     public String createEmailAuthenticationCode(String receiverEmail) {
         // 랜덤 인증 코드 생성
         String code;
         Random random = new Random();
-        StringBuffer codeBuffer = new StringBuffer();
+        StringBuilder codeBuilder = new StringBuilder();
         for (int i = 0; i < 6; i++)
-            codeBuffer.append(random.nextInt(9));
-        code = codeBuffer.toString();
+            codeBuilder.append(random.nextInt(9));
+        code = codeBuilder.toString();
 
         // 메일 보내기
         SimpleMailMessage message = new SimpleMailMessage();
