@@ -1,5 +1,6 @@
 package com.example.InstagramCloneCoding.domain.post.domain;
 
+import com.example.InstagramCloneCoding.domain.comment.domain.Comment;
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
 import com.example.InstagramCloneCoding.domain.post.dto.PostResponseDto;
 import lombok.Getter;
@@ -25,7 +26,7 @@ public class Post {
     @Column(name = "post_id", nullable = false)
     private int postId;
 
-    @Column(name = "content", nullable = true)
+    @Column(name = "content")
     private String content;
 
     @CreatedDate
@@ -38,6 +39,9 @@ public class Post {
 
     @OneToMany(mappedBy = "post", orphanRemoval = true)
     private List<PostImage> postImages = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
 
     public Post(Member member, String content) {
         this.member = member;

@@ -30,15 +30,27 @@ public class MemberService {
 
     private final AwsS3Service awsS3Service;
 
-    public MemberResponseDto saveMember(MemberRegisterDto registerDto) {
+    public MemberResponseDto saveMember(MemberRegisterDto memberRegisterDto) {
+        // 아이디 중복 확인
+        memberRepository.findById(memberRegisterDto.getUserId())
+                .ifPresent(member -> {
+                    throw new RestApiException(ID_ALREADY_EXISTS);
+                });
+
+        // 이메일 중복 확인
+        memberRepository.findByEmail(memberRegisterDto.getEmail())
+                .ifPresent(member -> {
+                    throw new RestApiException(EMAIL_ALREADY_REGISTERED);
+                });
+
         // 비밀번호 암호화
-        String encodedPassword = passwordEncoder.encode(registerDto.getPassword());
+        String encodedPassword = passwordEncoder.encode(memberRegisterDto.getPassword());
 
         // 저장
         Member member = Member.builder()
-                .email(registerDto.getEmail())
-                .userId(registerDto.getUserId())
-                .name(registerDto.getName())
+                .email(memberRegisterDto.getEmail())
+                .userId(memberRegisterDto.getUserId())
+                .name(memberRegisterDto.getName())
                 .password(encodedPassword)
                 .lastHomeAccessTime(LocalDateTime.now())
                 .build();
@@ -81,6 +93,12 @@ public class MemberService {
     public MemberResponseDto changeProfile(Member member, MemberEditDto memberEditDto) {
         // 이메일 변경되었는지 확인 -> 변경되었으면 인증용 메일 보내기
         if (!member.getEmail().equals(memberEditDto.getEmail())) {
+            // 이메일 중복 확인
+            memberRepository.findByEmail(memberEditDto.getEmail())
+                    .ifPresent(m -> {
+                        throw new RestApiException(EMAIL_ALREADY_REGISTERED);
+                    });
+
             member.setEmailVerified(false);
             member.setEmail(memberEditDto.getEmail());
             emailConfirmService.createEmailConfirmationToken(member.getUserId(), member.getEmail());
@@ -89,8 +107,6 @@ public class MemberService {
         // 이름과 소개글 변경
         member.setName(memberEditDto.getName());
         member.setIntroduction(memberEditDto.getIntroduction());
-
-        memberRepository.save(member);
 
         return member.memberToResponseDto();
     }
