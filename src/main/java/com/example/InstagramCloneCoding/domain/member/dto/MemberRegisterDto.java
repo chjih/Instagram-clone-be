@@ -20,7 +20,4 @@ public class MemberRegisterDto {
 
     @NotBlank
     private String password;
-
-//    @NotBlank
-//    private String confirmPassword;
 }

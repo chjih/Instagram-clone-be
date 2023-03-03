@@ -64,7 +64,7 @@ public class Member {
         this.userId = userId;
         this.name = name;
         this.password = password;
-        this.emailVerified = false;
+        this.emailVerified = true;
         this.lastHomeAccessTime = lastHomeAccessTime;
     }
 

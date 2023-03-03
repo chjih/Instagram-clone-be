@@ -1,5 +1,6 @@
 package com.example.InstagramCloneCoding.domain.post.domain;
 
+import com.example.InstagramCloneCoding.domain.comment.domain.Comment;
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
 import com.example.InstagramCloneCoding.domain.post.dto.PostResponseDto;
 import com.example.InstagramCloneCoding.domain.postlike.domain.PostLike;
@@ -43,6 +44,9 @@ public class Post {
 
     @OneToMany(mappedBy = "post", orphanRemoval = true)
     private List<PostLike> likes = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "post", orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
 
     public Post(Member author, String content) {
         this.author = author;
