@@ -5,6 +5,7 @@ import com.example.InstagramCloneCoding.domain.member.domain.Member;
 import com.example.InstagramCloneCoding.domain.member.dto.MemberEditDto;
 import com.example.InstagramCloneCoding.domain.member.dto.MemberRegisterDto;
 import com.example.InstagramCloneCoding.domain.member.dto.MemberResponseDto;
+import com.example.InstagramCloneCoding.global.common.aws.AwsS3Service;
 import com.example.InstagramCloneCoding.global.error.RestApiException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

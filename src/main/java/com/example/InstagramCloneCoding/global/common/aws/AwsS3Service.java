@@ -1,4 +1,4 @@
-package com.example.InstagramCloneCoding.domain.member.application;
+package com.example.InstagramCloneCoding.global.common.aws;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;

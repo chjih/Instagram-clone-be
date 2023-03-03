@@ -1,6 +1,6 @@
 package com.example.InstagramCloneCoding.domain.post.application;
 
-import com.example.InstagramCloneCoding.domain.member.application.AwsS3Service;
+import com.example.InstagramCloneCoding.global.common.aws.AwsS3Service;
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
 import com.example.InstagramCloneCoding.domain.post.dao.PostImageRepository;
 import com.example.InstagramCloneCoding.domain.post.dao.PostRepository;

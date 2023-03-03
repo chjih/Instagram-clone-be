@@ -25,7 +25,7 @@ public class PostApiController {
     @PostMapping(value = "/{member_id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<PostResponseDto> write(@Parameter(hidden = true) @LoggedInUser Member member,
                                                  @RequestPart("images") List<MultipartFile> images,
-                                                 @RequestPart(value = "content", required = false) String content) {
+                                                 @RequestParam(value = "content", required = false) String content) {
 
         PostResponseDto postResponseDto = postService.uploadPost(member, content, images);
 
