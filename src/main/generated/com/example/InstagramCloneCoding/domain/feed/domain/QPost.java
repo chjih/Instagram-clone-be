@@ -1,4 +1,4 @@
-package com.example.InstagramCloneCoding.domain.post.domain;
+package com.example.InstagramCloneCoding.domain.feed.domain;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -16,13 +16,15 @@ import com.querydsl.core.types.dsl.PathInits;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QPost extends EntityPathBase<Post> {
 
-    private static final long serialVersionUID = 1736471774L;
+    private static final long serialVersionUID = -756402980L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
     public static final QPost post = new QPost("post");
 
     public final com.example.InstagramCloneCoding.domain.member.domain.QMember author;
+
+    public final ListPath<com.example.InstagramCloneCoding.domain.comment.domain.Comment, com.example.InstagramCloneCoding.domain.comment.domain.QComment> comments = this.<com.example.InstagramCloneCoding.domain.comment.domain.Comment, com.example.InstagramCloneCoding.domain.comment.domain.QComment>createList("comments", com.example.InstagramCloneCoding.domain.comment.domain.Comment.class, com.example.InstagramCloneCoding.domain.comment.domain.QComment.class, PathInits.DIRECT2);
 
     public final StringPath content = createString("content");
 

@@ -2,7 +2,7 @@ package com.example.InstagramCloneCoding.domain.comment.domain;
 
 import com.example.InstagramCloneCoding.domain.comment.dto.CommentResponseDto;
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
-import com.example.InstagramCloneCoding.domain.post.domain.Post;
+import com.example.InstagramCloneCoding.domain.feed.domain.Post;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

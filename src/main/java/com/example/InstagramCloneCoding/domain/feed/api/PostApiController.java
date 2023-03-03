@@ -1,9 +1,9 @@
-package com.example.InstagramCloneCoding.domain.post.api;
+package com.example.InstagramCloneCoding.domain.feed.api;
 
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
-import com.example.InstagramCloneCoding.domain.post.application.PostFindService;
-import com.example.InstagramCloneCoding.domain.post.application.PostService;
-import com.example.InstagramCloneCoding.domain.post.dto.PostResponseDto;
+import com.example.InstagramCloneCoding.domain.feed.application.PostFindService;
+import com.example.InstagramCloneCoding.domain.feed.application.PostService;
+import com.example.InstagramCloneCoding.domain.feed.dto.PostResponseDto;
 import com.example.InstagramCloneCoding.global.common.annotation.LoggedInUser;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
@@ -17,12 +17,13 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("post/")
 public class PostApiController {
 
     private final PostService postService;
     private final PostFindService postFindService;
 
-    @PostMapping(value = "/{member_id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "write", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<PostResponseDto> write(@Parameter(hidden = true) @LoggedInUser Member member,
                                                  @RequestPart("images") List<MultipartFile> images,
                                                  @RequestParam(value = "content", required = false) String content) {
@@ -33,7 +34,7 @@ public class PostApiController {
                 .body(postResponseDto);
     }
 
-    @GetMapping(value = "/{member_id}")
+    @GetMapping(value = "readall/{member_id}")
     public ResponseEntity<List<PostResponseDto>> readAll(@Parameter(hidden = true) @LoggedInUser Member member,
                                                          @PathVariable("member_id") String memberId) {
         List<PostResponseDto> postResponseDtos = postFindService.findAll(memberId, member);
@@ -42,7 +43,7 @@ public class PostApiController {
                 .body(postResponseDtos);
     }
 
-    @GetMapping(value = "p/{post_id}")
+    @GetMapping(value = "read/{post_id}")
     public ResponseEntity<PostResponseDto> read(@Parameter(hidden = true) @LoggedInUser Member member,
                                                 @PathVariable("post_id") int postId) {
         PostResponseDto postResponseDto = postFindService.findByPostId(postId, member);
@@ -51,11 +52,20 @@ public class PostApiController {
                 .body(postResponseDto);
     }
 
-    @DeleteMapping(value = "p/{post_id}")
-    public ResponseEntity delete(@Parameter(hidden = true) @LoggedInUser Member member,
+    @DeleteMapping(value = "delete/{post_id}")
+    public ResponseEntity<String> delete(@Parameter(hidden = true) @LoggedInUser Member member,
                                  @PathVariable("post_id") int postId) {
         postService.deletePost(member, postId);
 
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body("delete success!");
+    }
+
+    @GetMapping("/home")
+    public ResponseEntity<List<PostResponseDto>> getPosts(@Parameter(hidden = true) @LoggedInUser Member member) {
+        List<PostResponseDto> posts = postFindService.getHomePosts(member);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(posts);
     }
 }

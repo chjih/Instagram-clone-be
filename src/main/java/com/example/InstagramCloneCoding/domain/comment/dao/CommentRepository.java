@@ -1,7 +1,7 @@
 package com.example.InstagramCloneCoding.domain.comment.dao;
 
 import com.example.InstagramCloneCoding.domain.comment.domain.Comment;
-import com.example.InstagramCloneCoding.domain.post.domain.Post;
+import com.example.InstagramCloneCoding.domain.feed.domain.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

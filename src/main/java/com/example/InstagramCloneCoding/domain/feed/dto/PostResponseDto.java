@@ -1,6 +1,6 @@
-package com.example.InstagramCloneCoding.domain.post.dto;
+package com.example.InstagramCloneCoding.domain.feed.dto;
 
-import com.example.InstagramCloneCoding.domain.post.domain.PostImage;
+import com.example.InstagramCloneCoding.domain.feed.domain.PostImage;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Getter;

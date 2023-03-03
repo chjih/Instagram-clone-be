@@ -1,13 +1,12 @@
 package com.example.InstagramCloneCoding.domain.postlike.domain;
 
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
-import com.example.InstagramCloneCoding.domain.post.domain.Post;
+import com.example.InstagramCloneCoding.domain.feed.domain.Post;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Getter

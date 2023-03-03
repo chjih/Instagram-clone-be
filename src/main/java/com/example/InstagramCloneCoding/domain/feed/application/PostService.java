@@ -1,12 +1,12 @@
-package com.example.InstagramCloneCoding.domain.post.application;
+package com.example.InstagramCloneCoding.domain.feed.application;
 
 import com.example.InstagramCloneCoding.global.common.aws.AwsS3Service;
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
-import com.example.InstagramCloneCoding.domain.post.dao.PostImageRepository;
-import com.example.InstagramCloneCoding.domain.post.dao.PostRepository;
-import com.example.InstagramCloneCoding.domain.post.domain.Post;
-import com.example.InstagramCloneCoding.domain.post.domain.PostImage;
-import com.example.InstagramCloneCoding.domain.post.dto.PostResponseDto;
+import com.example.InstagramCloneCoding.domain.feed.dao.PostImageRepository;
+import com.example.InstagramCloneCoding.domain.feed.dao.PostRepository;
+import com.example.InstagramCloneCoding.domain.feed.domain.Post;
+import com.example.InstagramCloneCoding.domain.feed.domain.PostImage;
+import com.example.InstagramCloneCoding.domain.feed.dto.PostResponseDto;
 import com.example.InstagramCloneCoding.global.error.RestApiException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import java.util.List;
 
-import static com.example.InstagramCloneCoding.domain.post.error.PostErrorCode.POST_NOT_FOUND;
+import static com.example.InstagramCloneCoding.domain.feed.error.PostErrorCode.POST_NOT_FOUND;
 import static com.example.InstagramCloneCoding.global.error.CommonErrorCode.FORBIDDEN;
 
 @Service

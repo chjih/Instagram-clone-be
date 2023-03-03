@@ -1,4 +1,4 @@
-package com.example.InstagramCloneCoding.domain.post.domain;
+package com.example.InstagramCloneCoding.domain.feed.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

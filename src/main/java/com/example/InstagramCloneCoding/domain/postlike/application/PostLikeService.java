@@ -1,8 +1,8 @@
 package com.example.InstagramCloneCoding.domain.postlike.application;
 
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
-import com.example.InstagramCloneCoding.domain.post.dao.PostRepository;
-import com.example.InstagramCloneCoding.domain.post.domain.Post;
+import com.example.InstagramCloneCoding.domain.feed.dao.PostRepository;
+import com.example.InstagramCloneCoding.domain.feed.domain.Post;
 import com.example.InstagramCloneCoding.domain.postlike.dao.PostLikeRepository;
 import com.example.InstagramCloneCoding.domain.postlike.domain.PostLike;
 import com.example.InstagramCloneCoding.global.error.RestApiException;
@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.example.InstagramCloneCoding.domain.post.error.PostErrorCode.POST_NOT_FOUND;
+import static com.example.InstagramCloneCoding.domain.feed.error.PostErrorCode.POST_NOT_FOUND;
 
 @Service
 @Transactional

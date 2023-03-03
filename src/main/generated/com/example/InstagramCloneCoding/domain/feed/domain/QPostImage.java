@@ -1,4 +1,4 @@
-package com.example.InstagramCloneCoding.domain.post.domain;
+package com.example.InstagramCloneCoding.domain.feed.domain;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -16,7 +16,7 @@ import com.querydsl.core.types.dsl.PathInits;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QPostImage extends EntityPathBase<PostImage> {
 
-    private static final long serialVersionUID = -1179410659L;
+    private static final long serialVersionUID = -1493684769L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 

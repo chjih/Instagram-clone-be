@@ -24,7 +24,7 @@ public class QPostLike extends EntityPathBase<PostLike> {
 
     public final com.example.InstagramCloneCoding.domain.member.domain.QMember member;
 
-    public final com.example.InstagramCloneCoding.domain.post.domain.QPost post;
+    public final com.example.InstagramCloneCoding.domain.feed.domain.QPost post;
 
     public final NumberPath<Integer> postLikeId = createNumber("postLikeId", Integer.class);
 
@@ -47,7 +47,7 @@ public class QPostLike extends EntityPathBase<PostLike> {
     public QPostLike(Class<? extends PostLike> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.member = inits.isInitialized("member") ? new com.example.InstagramCloneCoding.domain.member.domain.QMember(forProperty("member")) : null;
-        this.post = inits.isInitialized("post") ? new com.example.InstagramCloneCoding.domain.post.domain.QPost(forProperty("post"), inits.get("post")) : null;
+        this.post = inits.isInitialized("post") ? new com.example.InstagramCloneCoding.domain.feed.domain.QPost(forProperty("post"), inits.get("post")) : null;
     }
 
 }

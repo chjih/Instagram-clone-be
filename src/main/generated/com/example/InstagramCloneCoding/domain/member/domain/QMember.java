@@ -38,7 +38,7 @@ public class QMember extends EntityPathBase<Member> {
 
     public final StringPath password = createString("password");
 
-    public final ListPath<com.example.InstagramCloneCoding.domain.post.domain.Post, com.example.InstagramCloneCoding.domain.post.domain.QPost> posts = this.<com.example.InstagramCloneCoding.domain.post.domain.Post, com.example.InstagramCloneCoding.domain.post.domain.QPost>createList("posts", com.example.InstagramCloneCoding.domain.post.domain.Post.class, com.example.InstagramCloneCoding.domain.post.domain.QPost.class, PathInits.DIRECT2);
+    public final ListPath<com.example.InstagramCloneCoding.domain.feed.domain.Post, com.example.InstagramCloneCoding.domain.feed.domain.QPost> posts = this.<com.example.InstagramCloneCoding.domain.feed.domain.Post, com.example.InstagramCloneCoding.domain.feed.domain.QPost>createList("posts", com.example.InstagramCloneCoding.domain.feed.domain.Post.class, com.example.InstagramCloneCoding.domain.feed.domain.QPost.class, PathInits.DIRECT2);
 
     public final StringPath profileImage = createString("profileImage");
 

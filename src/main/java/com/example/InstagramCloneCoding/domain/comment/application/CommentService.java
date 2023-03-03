@@ -5,8 +5,8 @@ import com.example.InstagramCloneCoding.domain.comment.domain.Comment;
 import com.example.InstagramCloneCoding.domain.comment.dto.CommentDto;
 import com.example.InstagramCloneCoding.domain.comment.dto.CommentResponseDto;
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
-import com.example.InstagramCloneCoding.domain.post.dao.PostRepository;
-import com.example.InstagramCloneCoding.domain.post.domain.Post;
+import com.example.InstagramCloneCoding.domain.feed.dao.PostRepository;
+import com.example.InstagramCloneCoding.domain.feed.domain.Post;
 import com.example.InstagramCloneCoding.global.error.RestApiException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import java.util.List;
 
 import static com.example.InstagramCloneCoding.domain.comment.error.CommentErrorCode.COMMENT_NOT_FOUND;
 import static com.example.InstagramCloneCoding.domain.comment.error.CommentErrorCode.UNAVAILABLE_COMMENT_REQUEST;
-import static com.example.InstagramCloneCoding.domain.post.error.PostErrorCode.POST_NOT_FOUND;
+import static com.example.InstagramCloneCoding.domain.feed.error.PostErrorCode.POST_NOT_FOUND;
 import static com.example.InstagramCloneCoding.global.error.CommonErrorCode.FORBIDDEN;
 
 @Service
