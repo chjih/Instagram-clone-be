@@ -25,13 +25,20 @@ public class PostResponseDto {
 
     private List<String> postImages;
 
+    private int likes;
+
+    private boolean iLiked;
+
     @Builder
-    public PostResponseDto(int postId, String authorId, String content, LocalDateTime createdAt, List<PostImage> postImages) {
+    public PostResponseDto(int postId, String authorId, String content, LocalDateTime createdAt,
+                           List<PostImage> postImages, int likes) {
         this.postId = postId;
         this.authorId = authorId;
         this.content = content;
         this.createdAt = createdAt;
         this.postImages = getPostImagesName(postImages);
+        this.likes = likes;
+        this.iLiked = false;
     }
 
     private List<String> getPostImagesName(List<PostImage> postImages) {

@@ -1,6 +1,5 @@
 package com.example.InstagramCloneCoding.domain.home.api;
 
-import com.example.InstagramCloneCoding.domain.follow.application.FollowService;
 import com.example.InstagramCloneCoding.domain.home.application.HomeService;
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
 import com.example.InstagramCloneCoding.domain.post.dto.PostResponseDto;

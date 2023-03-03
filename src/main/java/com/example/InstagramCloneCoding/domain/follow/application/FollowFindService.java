@@ -1,6 +1,6 @@
 package com.example.InstagramCloneCoding.domain.follow.application;
 
-import com.example.InstagramCloneCoding.domain.member.application.MemberFindService;
+import com.example.InstagramCloneCoding.domain.follow.dao.FollowRepository;
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
 import com.example.InstagramCloneCoding.domain.member.dto.MemberResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -15,28 +15,20 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class FollowFindService {
 
-    private final MemberFindService memberFindService;
+    private final FollowRepository followRepository;
 
-    public List<MemberResponseDto> getFollowersId(Member member) {
-        List<Member> followers = memberFindService.findFollowers(member);
+    public List<MemberResponseDto> getFollowers(String memberId) {
+        List<Member> followers = followRepository.findFollowersById(memberId);
 
-        return getIds(followers);
+        return followers.stream()
+                .map(Member::memberToResponseDto)
+                .collect(Collectors.toList());
     }
 
-    public List<MemberResponseDto> getFollowingsId(Member member) {
-        List<Member> followings = memberFindService.findFollowings(member);
+    public List<MemberResponseDto> getFollowings(String memberId) {
+        List<Member> followings = followRepository.findFollowingsById(memberId);
 
-        return getIds(followings);
-    }
-
-    public List<MemberResponseDto> getFollowingBacksId(Member member) {
-        List<Member> friends = memberFindService.findFollowBacks(member);
-
-        return getIds(friends);
-    }
-
-    private List<MemberResponseDto> getIds(List<Member> members) {
-        return members.stream()
+        return followings.stream()
                 .map(Member::memberToResponseDto)
                 .collect(Collectors.toList());
     }

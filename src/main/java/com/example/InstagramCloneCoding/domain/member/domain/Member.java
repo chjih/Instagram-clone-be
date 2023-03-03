@@ -3,6 +3,7 @@ package com.example.InstagramCloneCoding.domain.member.domain;
 import com.example.InstagramCloneCoding.domain.follow.domain.Follow;
 import com.example.InstagramCloneCoding.domain.member.dto.MemberResponseDto;
 import com.example.InstagramCloneCoding.domain.post.domain.Post;
+import com.example.InstagramCloneCoding.domain.postlike.domain.PostLike;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -45,7 +46,7 @@ public class Member {
     @Column(name = "last_home_access_time")
     LocalDateTime lastHomeAccessTime;
 
-    @OneToMany(mappedBy = "member", orphanRemoval = true)
+    @OneToMany(mappedBy = "author", orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
 
     @OneToMany(mappedBy = "follower", orphanRemoval = true)
@@ -53,6 +54,9 @@ public class Member {
 
     @OneToMany(mappedBy = "following", orphanRemoval = true)
     private List<Follow> followers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", orphanRemoval = true)
+    private List<PostLike> likePosts = new ArrayList<>();
 
     @Builder
     public Member(String email, String userId, String name, String password, LocalDateTime lastHomeAccessTime) {
