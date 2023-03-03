@@ -27,7 +27,7 @@ public class PostService {
     private final PostImageRepository postImageRepository;
     private final AwsS3Service awsS3Service;
 
-    public PostResponseDto uploadPost(Member member, String content, List<MultipartFile> images) {
+    public void uploadPost(Member member, String content, List<MultipartFile> images) {
         // s3 bucket에 이미지 업로드
         List<String> fileNameList = awsS3Service.uploadFile(images);
 
@@ -40,8 +40,6 @@ public class PostService {
             PostImage postImage = new PostImage(fileName, post);
             postImageRepository.save(postImage);
         });
-
-        return post.postToResponseDto();
     }
 
     public void deletePost(Member member, int postId) {
