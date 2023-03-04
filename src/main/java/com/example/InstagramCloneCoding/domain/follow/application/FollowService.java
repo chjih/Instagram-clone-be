@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static com.example.InstagramCloneCoding.domain.follow.error.FollowError.ALREADY_FOLLOWING;
 import static com.example.InstagramCloneCoding.domain.follow.error.FollowError.NOT_FOLLOWING;
 import static com.example.InstagramCloneCoding.domain.member.error.MemberErrorCode.MEMBER_NOT_FOUND;
+import static com.example.InstagramCloneCoding.global.error.CommonErrorCode.FORBIDDEN;
 
 @Service
 @Transactional(readOnly = true)
@@ -25,6 +26,11 @@ public class FollowService {
     public void follow(Member follower, String followingId) {
         Member following = memberRepository.findById(followingId)
                 .orElseThrow(() -> new RestApiException(MEMBER_NOT_FOUND));
+
+        // 본인 팔로우 불가능
+        if(follower==following){
+            throw new RestApiException(FORBIDDEN);
+        }
 
         // follow 중복 검사
         followRepository.findByFollowerAndFollowing(follower, following)
