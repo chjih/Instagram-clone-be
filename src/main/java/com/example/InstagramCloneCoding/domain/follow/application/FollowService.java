@@ -15,20 +15,19 @@ import static com.example.InstagramCloneCoding.domain.member.error.MemberErrorCo
 import static com.example.InstagramCloneCoding.global.error.CommonErrorCode.FORBIDDEN;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
 public class FollowService {
 
     private final FollowRepository followRepository;
     private final MemberRepository memberRepository;
 
-    @Transactional
     public void follow(Member follower, String followingId) {
         Member following = memberRepository.findById(followingId)
                 .orElseThrow(() -> new RestApiException(MEMBER_NOT_FOUND));
 
         // 본인 팔로우 불가능
-        if(follower==following){
+        if (follower == following) {
             throw new RestApiException(FORBIDDEN);
         }
 
@@ -41,16 +40,23 @@ public class FollowService {
         followRepository.save(new Follow(follower, following));
     }
 
-    @Transactional
     public void unfollow(Member follower, String followingId) {
         Member following = memberRepository.findById(followingId)
                 .orElseThrow(() -> new RestApiException(MEMBER_NOT_FOUND));
 
-        Follow follow = followRepository.findByFollowerAndFollowing(follower, following).orElse(null);
         // follow 확인
-        if (follow == null) {
-            throw new RestApiException(NOT_FOLLOWING);
-        }
+        Follow follow = followRepository.findByFollowerAndFollowing(follower, following)
+                .orElseThrow(() -> new RestApiException(NOT_FOLLOWING));
+
+        followRepository.delete(follow);
+    }
+
+    public void deleteFollow(String followerId, Member following) {
+        Member follower = memberRepository.findById(followerId)
+                .orElseThrow(() -> new RestApiException(MEMBER_NOT_FOUND));
+
+        Follow follow = followRepository.findByFollowerAndFollowing(follower, following)
+                .orElseThrow(() -> new RestApiException(NOT_FOLLOWING));
 
         followRepository.delete(follow);
     }

@@ -32,11 +32,20 @@ public class FollowApiController {
 
     @DeleteMapping("/unfollow")
     public ResponseEntity<String> unfollow(@Parameter(hidden = true) @LoggedInUser Member member,
-                                           @RequestParam String followerId) {
-        followService.unfollow(member, followerId);
+                                           @RequestParam String followingId) {
+        followService.unfollow(member, followingId);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body("unfollow success!");
+    }
+
+    @DeleteMapping("/delete/follower")
+    public ResponseEntity<String> deleteFollower(@Parameter(hidden = true) @LoggedInUser Member member,
+                                                 @RequestParam String followerId) {
+        followService.deleteFollow(followerId, member);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body("delete follower success!");
     }
 
     @GetMapping("/getfollowers/{member_id}")
