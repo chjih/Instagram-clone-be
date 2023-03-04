@@ -32,6 +32,7 @@ dependencies {
 	testCompileOnly 'org.projectlombok:lombok:1.18.14'
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.14'
 
+	// JpaQueryFactory
 	implementation 'com.querydsl:querydsl-jpa'
 	implementation 'com.querydsl:querydsl-apt'
 
