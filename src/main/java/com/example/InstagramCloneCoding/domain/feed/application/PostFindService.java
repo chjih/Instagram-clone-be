@@ -1,5 +1,6 @@
 package com.example.InstagramCloneCoding.domain.feed.application;
 
+import com.example.InstagramCloneCoding.domain.feed.mapper.PostMapper;
 import com.example.InstagramCloneCoding.domain.follow.dao.FollowRepository;
 import com.example.InstagramCloneCoding.domain.member.dao.MemberRepository;
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
@@ -26,14 +27,14 @@ public class PostFindService {
 
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
-    private final PostLikeRepository postLikeRepository;
     private final FollowRepository followRepository;
+    private final PostMapper postMapper;
 
     public PostResponseDto findByPostId(int postId, Member member) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RestApiException(POST_NOT_FOUND));
 
-        return toPostResponseDto(post, member);
+        return postMapper.toDto(post, member);
     }
 
     public List<PostResponseDto> findAll(String memberId, Member member) {
@@ -42,7 +43,7 @@ public class PostFindService {
 
         return author.getPosts()
                 .stream()
-                .map(post -> toPostResponseDto(post, member))
+                .map(post -> postMapper.toDto(post, member))
                 .collect(Collectors.toList());
     }
 
@@ -54,16 +55,7 @@ public class PostFindService {
         member.setLastHomeAccessTime(LocalDateTime.now());
 
         return posts.stream()
-                .map(post -> toPostResponseDto(post, member))
+                .map(post -> postMapper.toDto(post, member))
                 .collect(Collectors.toList());
-    }
-
-    private PostResponseDto toPostResponseDto(Post post, Member member) {
-        PostResponseDto postResponseDto = post.postToResponseDto();
-
-        boolean iLiked = postLikeRepository.findByMemberAndPost(member, post).isPresent();
-        postResponseDto.setILiked(iLiked);
-
-        return postResponseDto;
     }
 }

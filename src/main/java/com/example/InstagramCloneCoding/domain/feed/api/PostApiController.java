@@ -24,14 +24,14 @@ public class PostApiController {
     private final PostFindService postFindService;
 
     @PostMapping(value = "write", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<PostResponseDto> write(@Parameter(hidden = true) @LoggedInUser Member member,
+    public ResponseEntity<String> write(@Parameter(hidden = true) @LoggedInUser Member member,
                                                  @RequestPart("images") List<MultipartFile> images,
                                                  @RequestParam(value = "content", required = false) String content) {
 
-        PostResponseDto postResponseDto = postService.uploadPost(member, content, images);
+        postService.uploadPost(member, content, images);
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(postResponseDto);
+                .body("upload post success!");
     }
 
     @GetMapping(value = "readall/{member_id}")
@@ -58,7 +58,7 @@ public class PostApiController {
         postService.deletePost(member, postId);
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body("delete success!");
+                .body("delete post success!");
     }
 
     @GetMapping("/home")

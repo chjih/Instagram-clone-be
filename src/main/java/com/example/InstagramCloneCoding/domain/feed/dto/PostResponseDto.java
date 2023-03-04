@@ -18,6 +18,8 @@ public class PostResponseDto {
 
     private String authorId;
 
+    private String authorProfileImage;
+
     private String content;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMddHHmmss")
@@ -31,14 +33,15 @@ public class PostResponseDto {
 
     @Builder
     public PostResponseDto(int postId, String authorId, String content, LocalDateTime createdAt,
-                           List<PostImage> postImages, int likes) {
+                           List<PostImage> postImages, int likes, boolean iLiked, String authorProfileImage) {
         this.postId = postId;
         this.authorId = authorId;
         this.content = content;
         this.createdAt = createdAt;
         this.postImages = getPostImagesName(postImages);
         this.likes = likes;
-        this.iLiked = false;
+        this.iLiked = iLiked;
+        this.authorProfileImage = authorProfileImage;
     }
 
     private List<String> getPostImagesName(List<PostImage> postImages) {

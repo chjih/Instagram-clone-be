@@ -52,15 +52,4 @@ public class Post {
         this.author = author;
         this.content = content;
     }
-
-    public PostResponseDto postToResponseDto() {
-        return PostResponseDto.builder()
-                .postId(postId)
-                .authorId(author.getUserId())
-                .content(content)
-                .createdAt(createdAt)
-                .postImages(postImages)
-                .likes(likes.size())
-                .build();
-    }
 }
