@@ -67,8 +67,4 @@ public class Member {
         this.emailVerified = true;
         this.lastHomeAccessTime = lastHomeAccessTime;
     }
-
-    public MemberResponseDto memberToResponseDto(){
-        return new MemberResponseDto(userId, email, name, profileImage, introduction);
-    }
 }

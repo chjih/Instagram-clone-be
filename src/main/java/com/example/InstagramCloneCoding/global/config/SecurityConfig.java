@@ -44,7 +44,8 @@ public class SecurityConfig {
         http.authorizeRequests()
                 .antMatchers("/auth/signin").permitAll() // 모든 요청 허가
                 .antMatchers("/auth/reissue").permitAll()
-                .antMatchers("/accounts/**").permitAll()
+                .antMatchers("/accounts/check").permitAll()
+                .antMatchers("/accounts/save").permitAll()
                 .antMatchers(SWAGGER_LIST).permitAll()
                 .anyRequest().authenticated()   // 나머지 인증 필요
                 .and()

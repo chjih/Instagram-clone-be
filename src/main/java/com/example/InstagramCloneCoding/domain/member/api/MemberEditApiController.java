@@ -4,7 +4,7 @@ import com.example.InstagramCloneCoding.domain.member.application.EmailConfirmSe
 import com.example.InstagramCloneCoding.domain.member.application.MemberService;
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
 import com.example.InstagramCloneCoding.domain.member.dto.MemberEditDto;
-import com.example.InstagramCloneCoding.domain.member.dto.MemberResponseDto;
+import com.example.InstagramCloneCoding.domain.member.dto.ProfileResponseDto;
 import com.example.InstagramCloneCoding.global.common.annotation.LoggedInUser;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
@@ -26,23 +26,23 @@ public class MemberEditApiController {
     private final EmailConfirmService emailConfirmService;
 
     @PostMapping(value = "profile-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<MemberResponseDto> changeProfileImage(@Parameter(hidden = true) @LoggedInUser Member member,
-                                                                @RequestPart("image") List<MultipartFile> multipartFile) {
+    public ResponseEntity<String> changeProfileImage(@Parameter(hidden = true) @LoggedInUser Member member,
+                                                     @RequestPart("image") List<MultipartFile> multipartFile) {
 
-        MemberResponseDto memberResponseDto = memberService.changeProfileImage(member, multipartFile);
+        String imagePath = memberService.changeProfileImage(member, multipartFile);
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(memberResponseDto);
+                .body(imagePath);
     }
 
     @PostMapping("profile")
-    public ResponseEntity<MemberResponseDto> changeProfile(@Parameter(hidden = true) @LoggedInUser Member member,
-                                                           @RequestBody MemberEditDto memberEditDto) {
+    public ResponseEntity<ProfileResponseDto> changeProfile(@Parameter(hidden = true) @LoggedInUser Member member,
+                                                            @RequestBody MemberEditDto memberEditDto) {
 
-        MemberResponseDto memberResponseDto = memberService.changeProfile(member, memberEditDto);
+        ProfileResponseDto profileResponseDto = memberService.changeProfile(member, memberEditDto);
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(memberResponseDto);
+                .body(profileResponseDto);
     }
 
     @GetMapping("confirm-email")
