@@ -15,7 +15,7 @@ public class MemberAccountsApiController {
 
     private final MemberService memberService;
 
-    @PostMapping("signup")
+    @PostMapping("check")
     public ResponseEntity<String> check(@RequestBody MemberRegisterDto registerDto) {
         // 중복 가입인지 확인하고 인증 메일 보내기
         String code = memberService.checkAndSendMail(registerDto);
