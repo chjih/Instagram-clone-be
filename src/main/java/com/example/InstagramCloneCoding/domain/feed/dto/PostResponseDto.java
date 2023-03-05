@@ -31,9 +31,11 @@ public class PostResponseDto {
 
     private boolean iLiked;
 
+    private int commentCount;
+
     @Builder
     public PostResponseDto(int postId, String authorId, String content, LocalDateTime createdAt,
-                           List<PostImage> postImages, int likes, boolean iLiked, String authorProfileImage) {
+                           List<PostImage> postImages, int likes, boolean iLiked, String authorProfileImage, int commentCount) {
         this.postId = postId;
         this.authorId = authorId;
         this.content = content;
@@ -42,6 +44,7 @@ public class PostResponseDto {
         this.likes = likes;
         this.iLiked = iLiked;
         this.authorProfileImage = authorProfileImage;
+        this.commentCount = commentCount;
     }
 
     private List<String> getPostImagesName(List<PostImage> postImages) {

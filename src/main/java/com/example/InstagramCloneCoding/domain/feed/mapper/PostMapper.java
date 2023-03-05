@@ -25,6 +25,7 @@ public class PostMapper {
                 .likes(post.getLikes().size())
                 .iLiked(iLiked)
                 .authorProfileImage(member.getProfileImage())
+                .commentCount(post.getComments().size())
                 .build();
     }
 }
