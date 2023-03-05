@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("accounts/")
 @RequiredArgsConstructor
@@ -44,5 +46,14 @@ public class MemberAccountsApiController {
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(profileResponseDto);
+    }
+
+    @DeleteMapping("delete")
+    public ResponseEntity<String> delete(@Parameter(hidden = true) @LoggedInUser Member member,
+                                         @RequestBody Map<String, String> passwordMap) {
+        memberService.deleteAccount(member, passwordMap.get("password"));
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body("delete account success!");
     }
 }
