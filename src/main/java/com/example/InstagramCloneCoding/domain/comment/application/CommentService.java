@@ -4,6 +4,7 @@ import com.example.InstagramCloneCoding.domain.comment.dao.CommentRepository;
 import com.example.InstagramCloneCoding.domain.comment.domain.Comment;
 import com.example.InstagramCloneCoding.domain.comment.dto.CommentDto;
 import com.example.InstagramCloneCoding.domain.comment.dto.CommentResponseDto;
+import com.example.InstagramCloneCoding.domain.comment.mapper.CommentMapper;
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
 import com.example.InstagramCloneCoding.domain.feed.dao.PostRepository;
 import com.example.InstagramCloneCoding.domain.feed.domain.Post;
@@ -29,6 +30,8 @@ CommentService {
     private final PostRepository postRepository;
 
     private final CommentRepository commentRepository;
+
+    private final CommentMapper commentMapper;
 
     public CommentResponseDto writeComment(Member member, int postId, CommentDto commentDto) {
         int ref, refStep;
@@ -69,7 +72,7 @@ CommentService {
                 .build();
         commentRepository.save(comment);
 
-        return comment.commentToResponseDto();
+        return commentMapper.toDto(comment);
     }
 
     public void deleteComment(Member member, int commentId) {
