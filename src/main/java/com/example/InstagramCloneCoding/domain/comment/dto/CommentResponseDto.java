@@ -14,7 +14,9 @@ public class CommentResponseDto {
 
     private int postId;
 
-    private String userId;
+    private String authorId;
+
+    private String authorProfileImage;
 
     private String content;
 
@@ -24,12 +26,14 @@ public class CommentResponseDto {
     int ref;
 
     @Builder
-    public CommentResponseDto(int commentId, int postId, String userId, String content, LocalDateTime createdAt, int ref) {
+    public CommentResponseDto(int commentId, int postId, String authorId, String content, LocalDateTime createdAt,
+                              int ref, String authorProfileImage) {
         this.commentId = commentId;
         this.postId = postId;
-        this.userId = userId;
+        this.authorId = authorId;
         this.content = content;
         this.createdAt = createdAt;
         this.ref = ref;
+        this.authorProfileImage = authorProfileImage;
     }
 }
