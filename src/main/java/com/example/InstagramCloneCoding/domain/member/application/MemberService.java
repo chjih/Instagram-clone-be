@@ -5,6 +5,8 @@ import com.example.InstagramCloneCoding.domain.member.domain.Member;
 import com.example.InstagramCloneCoding.domain.member.dto.MemberEditDto;
 import com.example.InstagramCloneCoding.domain.member.dto.MemberRegisterDto;
 import com.example.InstagramCloneCoding.domain.member.dto.MemberResponseDto;
+import com.example.InstagramCloneCoding.domain.member.dto.ProfileResponseDto;
+import com.example.InstagramCloneCoding.domain.member.mapper.MemberMapper;
 import com.example.InstagramCloneCoding.global.common.aws.AwsS3Service;
 import com.example.InstagramCloneCoding.global.error.RestApiException;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +32,8 @@ public class MemberService {
     private final EmailConfirmService emailConfirmService;
 
     private final AwsS3Service awsS3Service;
+
+    private final MemberMapper memberMapper;
 
     public MemberResponseDto saveMember(MemberRegisterDto memberRegisterDto) {
         // 아이디 중복 확인
@@ -57,7 +61,7 @@ public class MemberService {
                 .build();
         memberRepository.save(member);
 
-        return member.memberToResponseDto();
+        return memberMapper.toMemberResponseDto(member);
     }
 
     public String checkAndSendMail(MemberRegisterDto memberRegisterDto) {
@@ -76,7 +80,7 @@ public class MemberService {
         return emailConfirmService.createEmailAuthenticationCode(memberRegisterDto.getEmail());
     }
 
-    public MemberResponseDto changeProfileImage(Member member, List<MultipartFile> multipartFile) {
+    public String changeProfileImage(Member member, List<MultipartFile> multipartFile) {
         // 기존 프로필 사진 s3 버킷에서 삭제
         if (member.getProfileImage() != null)
             awsS3Service.deleteFile(member.getProfileImage());
@@ -86,12 +90,11 @@ public class MemberService {
 
         // 프로필 이미지 경로 업데이트
         member.setProfileImage(imagePath);
-        memberRepository.save(member);
 
-        return member.memberToResponseDto();
+        return imagePath;
     }
 
-    public MemberResponseDto changeProfile(Member member, MemberEditDto memberEditDto) {
+    public ProfileResponseDto changeProfile(Member member, MemberEditDto memberEditDto) {
         // 이메일 변경되었는지 확인 -> 변경되었으면 인증용 메일 보내기
         if (!member.getEmail().equals(memberEditDto.getEmail())) {
             // 이메일 중복 확인
@@ -109,7 +112,14 @@ public class MemberService {
         member.setName(memberEditDto.getName());
         member.setIntroduction(memberEditDto.getIntroduction());
 
-        return member.memberToResponseDto();
+        return memberMapper.toProfileResponse(member, member);
+    }
+
+    public ProfileResponseDto findAccount(Member member, String targetId) {
+        Member target = memberRepository.findById(targetId)
+                .orElseThrow(() -> new RestApiException(MEMBER_NOT_FOUND));
+
+        return memberMapper.toProfileResponse(target, member);
     }
 }
 

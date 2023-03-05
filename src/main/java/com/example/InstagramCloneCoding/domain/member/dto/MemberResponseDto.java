@@ -11,11 +11,7 @@ public class MemberResponseDto {
 
     private String userId;
 
-    private String email;
-
     private String name;
 
     private String profileImage;
-
-    private String introduction;
 }

@@ -1,8 +1,12 @@
 package com.example.InstagramCloneCoding.domain.member.api;
 
 import com.example.InstagramCloneCoding.domain.member.application.MemberService;
+import com.example.InstagramCloneCoding.domain.member.domain.Member;
 import com.example.InstagramCloneCoding.domain.member.dto.MemberRegisterDto;
 import com.example.InstagramCloneCoding.domain.member.dto.MemberResponseDto;
+import com.example.InstagramCloneCoding.domain.member.dto.ProfileResponseDto;
+import com.example.InstagramCloneCoding.global.common.annotation.LoggedInUser;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,5 +35,14 @@ public class MemberAccountsApiController {
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(memberResponseDto);
+    }
+
+    @GetMapping("{member_id}")
+    public ResponseEntity<ProfileResponseDto> profile(@Parameter(hidden = true) @LoggedInUser Member member,
+                                                      @PathVariable(name = "member_id") String targetId) {
+        ProfileResponseDto profileResponseDto = memberService.findAccount(member, targetId);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(profileResponseDto);
     }
 }
