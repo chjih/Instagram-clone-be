@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.example.InstagramCloneCoding.domain.comment.error.CommentErrorCode.COMMENT_NOT_FOUND;
 import static com.example.InstagramCloneCoding.domain.comment.error.CommentErrorCode.UNAVAILABLE_COMMENT_REQUEST;
@@ -92,5 +93,16 @@ CommentService {
         else {
             commentRepository.delete(deleteComment);
         }
+    }
+
+    public List<CommentResponseDto> readAllComments(int postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RestApiException(POST_NOT_FOUND));
+
+        List<Comment> comments = commentRepository.findByPostOrderByRefAscRefStepAsc(post);
+
+        return comments.stream()
+                .map(commentMapper::toDto)
+                .collect(Collectors.toList());
     }
 }

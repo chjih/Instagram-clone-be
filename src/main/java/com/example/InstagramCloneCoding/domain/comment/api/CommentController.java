@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("comment/")
 @RequiredArgsConstructor
@@ -29,10 +31,19 @@ public class CommentController {
     }
 
     @DeleteMapping("{comment_id}")
-    public ResponseEntity delete(@Parameter(hidden = true) @LoggedInUser Member member,
+    public ResponseEntity<String> delete(@Parameter(hidden = true) @LoggedInUser Member member,
                                  @PathVariable("comment_id") int commentId) {
         commentService.deleteComment(member, commentId);
 
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body("delete comment success");
+    }
+
+    @GetMapping("{post_id}")
+    public ResponseEntity<List<CommentResponseDto>> readAll(@PathVariable("post_id") int postId) {
+        List<CommentResponseDto> commentResponseDtos = commentService.readAllComments(postId);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(commentResponseDtos);
     }
 }
