@@ -15,5 +15,7 @@ public interface CommentRepository extends JpaRepository<Comment, Integer> {
 
     List<Comment> findByRef(int ref);
 
+    List<Comment> findByPostOrderByRefAscRefStepAsc(Post post);
+    
     List<Comment> findByMember(Member member);
 }

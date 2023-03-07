@@ -4,6 +4,7 @@ import com.example.InstagramCloneCoding.domain.comment.dao.CommentRepository;
 import com.example.InstagramCloneCoding.domain.comment.domain.Comment;
 import com.example.InstagramCloneCoding.domain.comment.dto.CommentDto;
 import com.example.InstagramCloneCoding.domain.comment.dto.CommentResponseDto;
+import com.example.InstagramCloneCoding.domain.comment.mapper.CommentMapper;
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
 import com.example.InstagramCloneCoding.domain.feed.dao.PostRepository;
 import com.example.InstagramCloneCoding.domain.feed.domain.Post;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.example.InstagramCloneCoding.domain.comment.error.CommentErrorCode.COMMENT_NOT_FOUND;
 import static com.example.InstagramCloneCoding.domain.comment.error.CommentErrorCode.UNAVAILABLE_COMMENT_REQUEST;
@@ -29,6 +31,8 @@ CommentService {
     private final PostRepository postRepository;
 
     private final CommentRepository commentRepository;
+
+    private final CommentMapper commentMapper;
 
     public CommentResponseDto writeComment(Member member, int postId, CommentDto commentDto) {
         int ref, refStep;
@@ -69,7 +73,7 @@ CommentService {
                 .build();
         commentRepository.save(comment);
 
-        return comment.commentToResponseDto();
+        return commentMapper.toDto(comment);
     }
 
     public void deleteComment(Member member, int commentId) {
@@ -89,5 +93,16 @@ CommentService {
         else {
             commentRepository.delete(deleteComment);
         }
+    }
+
+    public List<CommentResponseDto> readAllComments(int postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RestApiException(POST_NOT_FOUND));
+
+        List<Comment> comments = commentRepository.findByPostOrderByRefAscRefStepAsc(post);
+
+        return comments.stream()
+                .map(commentMapper::toDto)
+                .collect(Collectors.toList());
     }
 }

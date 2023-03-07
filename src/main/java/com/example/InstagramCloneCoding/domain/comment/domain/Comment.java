@@ -54,8 +54,4 @@ public class Comment {
         this.ref = ref;
         this.refStep = refStep;
     }
-
-    public CommentResponseDto commentToResponseDto() {
-        return new CommentResponseDto(commentId, post.getPostId(), member.getUserId(), content, createdAt, ref);
-    }
 }
