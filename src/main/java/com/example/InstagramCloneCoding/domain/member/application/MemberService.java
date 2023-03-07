@@ -1,5 +1,8 @@
 package com.example.InstagramCloneCoding.domain.member.application;
 
+import com.example.InstagramCloneCoding.domain.comment.dao.CommentRepository;
+import com.example.InstagramCloneCoding.domain.comment.domain.Comment;
+import com.example.InstagramCloneCoding.domain.feed.dao.PostRepository;
 import com.example.InstagramCloneCoding.domain.member.dao.MemberRepository;
 import com.example.InstagramCloneCoding.domain.member.domain.Member;
 import com.example.InstagramCloneCoding.domain.member.dto.MemberEditDto;
@@ -34,6 +37,10 @@ public class MemberService {
     private final AwsS3Service awsS3Service;
 
     private final MemberMapper memberMapper;
+
+//    private final CommentRepository commentRepository;
+
+    private final PostRepository postRepository;
 
     public MemberResponseDto saveMember(MemberRegisterDto memberRegisterDto) {
         // 아이디 중복 확인
@@ -120,6 +127,34 @@ public class MemberService {
                 .orElseThrow(() -> new RestApiException(MEMBER_NOT_FOUND));
 
         return memberMapper.toProfileResponse(target, member);
+    }
+
+    public void deleteAccount(Member member, String password) {
+        // 비밀번호 확인
+        if (!passwordEncoder.matches(password, member.getPassword()))
+            throw new RestApiException(WRONG_CONFIRM_PASSWORD);
+
+        // 프로필 이미지 삭제
+        awsS3Service.deleteFile(member.getProfileImage());
+
+        // 작성한 포스트의 이미지 삭제
+        postRepository.findByAuthor(member).forEach(post ->
+            post.getPostImages().forEach(postImage ->
+                    awsS3Service.deleteFile(postImage.getPostImageId())));
+
+        // 작성한 댓글 삭제
+//        commentRepository.findByMember(member).forEach(comment -> {
+//            if (comment.getRefStep() == 0) {
+//                List<Comment> comments = commentRepository.findByRef(comment.getRef());
+//                comments.forEach(commentRepository::delete);
+//            }
+//            else {
+//                commentRepository.delete(comment);
+//            }
+//        });
+
+        // Member DB에서 삭제
+        memberRepository.delete(member);
     }
 }
 
