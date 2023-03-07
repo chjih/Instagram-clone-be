@@ -22,8 +22,8 @@ public class CommentController {
 
     @PostMapping("{post_id}")
     public ResponseEntity<CommentResponseDto> write(@Parameter(hidden = true) @LoggedInUser Member member,
-                                @PathVariable("post_id") int postId,
-                                @RequestBody CommentDto commentDto) {
+                                                    @PathVariable("post_id") int postId,
+                                                    @RequestBody CommentDto commentDto) {
         CommentResponseDto commentResponseDto = commentService.writeComment(member, postId, commentDto);
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -32,7 +32,7 @@ public class CommentController {
 
     @DeleteMapping("{comment_id}")
     public ResponseEntity<String> delete(@Parameter(hidden = true) @LoggedInUser Member member,
-                                 @PathVariable("comment_id") int commentId) {
+                                         @PathVariable("comment_id") int commentId) {
         commentService.deleteComment(member, commentId);
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -40,8 +40,9 @@ public class CommentController {
     }
 
     @GetMapping("{post_id}")
-    public ResponseEntity<List<CommentResponseDto>> readAll(@PathVariable("post_id") int postId) {
-        List<CommentResponseDto> commentResponseDtos = commentService.readAllComments(postId);
+    public ResponseEntity<List<CommentResponseDto>> readAll(@Parameter(hidden = true) @LoggedInUser Member member,
+                                                            @PathVariable("post_id") int postId) {
+        List<CommentResponseDto> commentResponseDtos = commentService.readAllComments(member, postId);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(commentResponseDtos);

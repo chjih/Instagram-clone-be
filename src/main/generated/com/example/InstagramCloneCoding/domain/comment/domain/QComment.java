@@ -28,6 +28,8 @@ public class QComment extends EntityPathBase<Comment> {
 
     public final DateTimePath<java.time.LocalDateTime> createdAt = createDateTime("createdAt", java.time.LocalDateTime.class);
 
+    public final ListPath<com.example.InstagramCloneCoding.domain.commentlike.domain.CommentLike, com.example.InstagramCloneCoding.domain.commentlike.domain.QCommentLike> likes = this.<com.example.InstagramCloneCoding.domain.commentlike.domain.CommentLike, com.example.InstagramCloneCoding.domain.commentlike.domain.QCommentLike>createList("likes", com.example.InstagramCloneCoding.domain.commentlike.domain.CommentLike.class, com.example.InstagramCloneCoding.domain.commentlike.domain.QCommentLike.class, PathInits.DIRECT2);
+
     public final com.example.InstagramCloneCoding.domain.member.domain.QMember member;
 
     public final com.example.InstagramCloneCoding.domain.feed.domain.QPost post;
