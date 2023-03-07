@@ -17,8 +17,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "comment")
-@Getter
-@Setter
+@Getter @Setter
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Comment {
