@@ -23,11 +23,15 @@ public class CommentResponseDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMddHHmmss")
     private LocalDateTime createdAt;
 
-    int ref;
+    private int ref;
+
+    private int likes;
+
+    private boolean iLiked;
 
     @Builder
     public CommentResponseDto(int commentId, int postId, String authorId, String content, LocalDateTime createdAt,
-                              int ref, String authorProfileImage) {
+                              int ref, String authorProfileImage, int likes, boolean iLiked) {
         this.commentId = commentId;
         this.postId = postId;
         this.authorId = authorId;
@@ -35,5 +39,7 @@ public class CommentResponseDto {
         this.createdAt = createdAt;
         this.ref = ref;
         this.authorProfileImage = authorProfileImage;
+        this.likes = likes;
+        this.iLiked = iLiked;
     }
 }

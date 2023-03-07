@@ -73,7 +73,7 @@ CommentService {
                 .build();
         commentRepository.save(comment);
 
-        return commentMapper.toDto(comment);
+        return commentMapper.toDto(member, comment);
     }
 
     public void deleteComment(Member member, int commentId) {
@@ -95,14 +95,14 @@ CommentService {
         }
     }
 
-    public List<CommentResponseDto> readAllComments(int postId) {
+    public List<CommentResponseDto> readAllComments(Member member, int postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RestApiException(POST_NOT_FOUND));
 
         List<Comment> comments = commentRepository.findByPostOrderByRefAscRefStepAsc(post);
 
         return comments.stream()
-                .map(commentMapper::toDto)
+                .map(comment -> commentMapper.toDto(member, comment))
                 .collect(Collectors.toList());
     }
 }

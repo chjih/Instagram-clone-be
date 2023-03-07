@@ -12,6 +12,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -49,7 +50,7 @@ public class Comment {
     private int refStep;
 
     @OneToMany(mappedBy = "comment", orphanRemoval = true)
-    private List<CommentLike> likes;
+    private List<CommentLike> likes = new ArrayList<>();
 
     @Builder
     public Comment(String content, Member member, Post post, int ref, int refStep) {
