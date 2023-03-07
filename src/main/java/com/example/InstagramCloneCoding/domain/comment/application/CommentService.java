@@ -34,34 +34,21 @@ CommentService {
 
     private final CommentMapper commentMapper;
 
+    private int ref;
+
+    private int refStep;
+
     public CommentResponseDto writeComment(Member member, int postId, CommentDto commentDto) {
-        int ref, refStep;
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RestApiException(POST_NOT_FOUND));
 
         // 대댓글인 경우 (CommentDto의 commentId가 null이 아닌 경우)
         if (commentDto.getCommentId() != null) {
-            Comment comment = commentRepository.findById(commentDto.getCommentId())
-                    .orElseThrow(() -> new RestApiException(COMMENT_NOT_FOUND));
-            if (comment.getPost().getPostId() != postId)
-                throw new RestApiException(UNAVAILABLE_COMMENT_REQUEST);
-
-            ref = comment.getRef();
-            refStep = commentRepository.findByPostAndRef(post, comment.getRef()).size();
+            setReplyRef(post, commentDto);
         }
         // 대댓글이 아닌 경우 (CommentDto의 commentId가 null인 경우)
         else {
-            List<Comment> comments = post.getComments();
-
-            // 첫 댓글인 경우
-            if (comments.size() == 0) {
-                ref = 0;
-                refStep = 0;
-            }
-            else {
-                ref = comments.get(comments.size() - 1).getRef() + 1;
-                refStep = 0;
-            }
+            setCommentRef(post, commentDto);
         }
 
         Comment comment = Comment.builder()
@@ -74,6 +61,30 @@ CommentService {
         commentRepository.save(comment);
 
         return commentMapper.toDto(member, comment);
+    }
+
+    private void setReplyRef(Post post, CommentDto commentDto) {
+        Comment comment = commentRepository.findById(commentDto.getCommentId())
+                .orElseThrow(() -> new RestApiException(COMMENT_NOT_FOUND));
+        if (comment.getPost().getPostId() != post.getPostId())
+            throw new RestApiException(UNAVAILABLE_COMMENT_REQUEST);
+
+        ref = comment.getRef();
+        refStep = commentRepository.findByPostAndRef(post, comment.getRef()).size();
+    }
+
+    private void setCommentRef(Post post, CommentDto commentDto) {
+        List<Comment> comments = post.getComments();
+
+        // 첫 댓글인 경우
+        if (comments.size() == 0) {
+            ref = 0;
+            refStep = 0;
+        }
+        else {
+            ref = comments.get(comments.size() - 1).getRef() + 1;
+            refStep = 0;
+        }
     }
 
     public void deleteComment(Member member, int commentId) {
