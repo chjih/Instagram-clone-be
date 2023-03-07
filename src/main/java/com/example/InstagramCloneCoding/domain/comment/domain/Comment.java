@@ -1,8 +1,8 @@
 package com.example.InstagramCloneCoding.domain.comment.domain;
 
-import com.example.InstagramCloneCoding.domain.comment.dto.CommentResponseDto;
-import com.example.InstagramCloneCoding.domain.member.domain.Member;
+import com.example.InstagramCloneCoding.domain.commentlike.domain.CommentLike;
 import com.example.InstagramCloneCoding.domain.feed.domain.Post;
+import com.example.InstagramCloneCoding.domain.member.domain.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,10 +12,12 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "comment")
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Comment {
@@ -46,6 +48,9 @@ public class Comment {
     @Column(name = "ref_step")
     private int refStep;
 
+    @OneToMany(mappedBy = "comment", orphanRemoval = true)
+    private List<CommentLike> likes;
+
     @Builder
     public Comment(String content, Member member, Post post, int ref, int refStep) {
         this.content = content;
@@ -53,9 +58,5 @@ public class Comment {
         this.post = post;
         this.ref = ref;
         this.refStep = refStep;
-    }
-
-    public CommentResponseDto commentToResponseDto() {
-        return new CommentResponseDto(commentId, post.getPostId(), member.getUserId(), content, createdAt, ref);
     }
 }
