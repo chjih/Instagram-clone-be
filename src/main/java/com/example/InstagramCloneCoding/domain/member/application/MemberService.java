@@ -135,7 +135,8 @@ public class MemberService {
             throw new RestApiException(WRONG_CONFIRM_PASSWORD);
 
         // 프로필 이미지 삭제
-        awsS3Service.deleteFile(member.getProfileImage());
+        if (member.getProfileImage() != null)
+            awsS3Service.deleteFile(member.getProfileImage());
 
         // 작성한 포스트의 이미지 삭제
         postRepository.findByAuthor(member).forEach(post ->
@@ -143,15 +144,15 @@ public class MemberService {
                     awsS3Service.deleteFile(postImage.getPostImageId())));
 
         // 작성한 댓글 삭제
-//        commentRepository.findByMember(member).forEach(comment -> {
-//            if (comment.getRefStep() == 0) {
-//                List<Comment> comments = commentRepository.findByRef(comment.getRef());
-//                comments.forEach(commentRepository::delete);
-//            }
-//            else {
-//                commentRepository.delete(comment);
-//            }
-//        });
+        commentRepository.findByMember(member).forEach(comment -> {
+            if (comment.getRefStep() == 0) {
+                List<Comment> comments = commentRepository.findByRef(comment.getRef());
+                comments.forEach(commentRepository::delete);
+            }
+            else {
+                commentRepository.delete(comment);
+            }
+        });
 
         // Member DB에서 삭제
         memberRepository.delete(member);
