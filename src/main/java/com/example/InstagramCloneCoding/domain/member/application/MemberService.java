@@ -38,7 +38,7 @@ public class MemberService {
 
     private final MemberMapper memberMapper;
 
-//    private final CommentRepository commentRepository;
+    private final CommentRepository commentRepository;
 
     private final PostRepository postRepository;
 
