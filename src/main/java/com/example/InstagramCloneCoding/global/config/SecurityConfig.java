@@ -46,7 +46,7 @@ public class SecurityConfig{
                 .antMatchers("/auth/reissue").permitAll()
                 .antMatchers("/accounts/check").permitAll()
                 .antMatchers("/accounts/save").permitAll()
-                .antMatchers("/edit/confirm-email").permitAll()
+                .antMatchers("/accounts/confirm-email").permitAll()
                 .antMatchers(SWAGGER_LIST).permitAll()
                 .anyRequest().hasRole("USER")   // 나머지 인증 필요
                 .and()
