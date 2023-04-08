@@ -46,8 +46,9 @@ public class SecurityConfig{
                 .antMatchers("/auth/reissue").permitAll()
                 .antMatchers("/accounts/check").permitAll()
                 .antMatchers("/accounts/save").permitAll()
+                .antMatchers("/edit/confirm-email").permitAll()
                 .antMatchers(SWAGGER_LIST).permitAll()
-                .anyRequest().authenticated()   // 나머지 인증 필요
+                .anyRequest().hasRole("USER")   // 나머지 인증 필요
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, redisTemplate)
                         , UsernamePasswordAuthenticationFilter.class)   // JwtAuthenticationFilter를 UsernamePasswordAuthenticationFilter 전에 넣음

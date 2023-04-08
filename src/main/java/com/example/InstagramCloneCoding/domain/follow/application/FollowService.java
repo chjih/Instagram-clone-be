@@ -44,17 +44,17 @@ public class FollowService {
         Member following = memberRepository.findById(followingId)
                 .orElseThrow(() -> new RestApiException(MEMBER_NOT_FOUND));
 
-        // follow 확인
-        Follow follow = followRepository.findByFollowerAndFollowing(follower, following)
-                .orElseThrow(() -> new RestApiException(NOT_FOLLOWING));
-
-        followRepository.delete(follow);
+        deleteFollowerFollowing(follower, following);
     }
 
     public void deleteFollow(String followerId, Member following) {
         Member follower = memberRepository.findById(followerId)
                 .orElseThrow(() -> new RestApiException(MEMBER_NOT_FOUND));
 
+        deleteFollowerFollowing(follower, following);
+    }
+
+    private void deleteFollowerFollowing(Member follower, Member following) {
         Follow follow = followRepository.findByFollowerAndFollowing(follower, following)
                 .orElseThrow(() -> new RestApiException(NOT_FOLLOWING));
 

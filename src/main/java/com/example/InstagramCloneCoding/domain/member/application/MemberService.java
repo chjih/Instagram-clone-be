@@ -43,17 +43,7 @@ public class MemberService {
     private final PostRepository postRepository;
 
     public MemberResponseDto saveMember(MemberRegisterDto memberRegisterDto) {
-        // 아이디 중복 확인
-        memberRepository.findById(memberRegisterDto.getUserId())
-                .ifPresent(member -> {
-                    throw new RestApiException(ID_ALREADY_EXISTS);
-                });
-
-        // 이메일 중복 확인
-        memberRepository.findByEmail(memberRegisterDto.getEmail())
-                .ifPresent(member -> {
-                    throw new RestApiException(EMAIL_ALREADY_REGISTERED);
-                });
+        validateSignUpInfo(memberRegisterDto);
 
         // 비밀번호 암호화
         String encodedPassword = passwordEncoder.encode(memberRegisterDto.getPassword());
@@ -72,17 +62,7 @@ public class MemberService {
     }
 
     public String checkAndSendMail(MemberRegisterDto memberRegisterDto) {
-        // 아이디 중복 확인
-        memberRepository.findById(memberRegisterDto.getUserId())
-                .ifPresent(member -> {
-                    throw new RestApiException(ID_ALREADY_EXISTS);
-                });
-
-        // 이메일 중복 확인
-        memberRepository.findByEmail(memberRegisterDto.getEmail())
-                .ifPresent(member -> {
-                    throw new RestApiException(EMAIL_ALREADY_REGISTERED);
-                });
+        validateSignUpInfo(memberRegisterDto);
 
         return emailConfirmService.createEmailAuthenticationCode(memberRegisterDto.getEmail());
     }
@@ -156,6 +136,20 @@ public class MemberService {
 
         // Member DB에서 삭제
         memberRepository.delete(member);
+    }
+
+    private void validateSignUpInfo(MemberRegisterDto memberRegisterDto){
+        // 아이디 중복 확인
+        memberRepository.findById(memberRegisterDto.getUserId())
+                .ifPresent(member -> {
+                    throw new RestApiException(ID_ALREADY_EXISTS);
+                });
+
+        // 이메일 중복 확인
+        memberRepository.findByEmail(memberRegisterDto.getEmail())
+                .ifPresent(member -> {
+                    throw new RestApiException(EMAIL_ALREADY_REGISTERED);
+                });
     }
 }
 
