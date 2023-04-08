@@ -10,8 +10,8 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum MemberErrorCode implements ErrorCode {
 
-    ID_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "ID already exists"),
-    EMAIL_ALREADY_REGISTERED(HttpStatus.BAD_REQUEST, "Email is already registered"),
+    ID_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "id already exists"),
+    EMAIL_ALREADY_REGISTERED(HttpStatus.BAD_REQUEST, "email is already registered"),
     WRONG_CONFIRM_PASSWORD(HttpStatus.BAD_REQUEST, "confirm password is wrong"),
     TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "token not found"),
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "member not found"),
