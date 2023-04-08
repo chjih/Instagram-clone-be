@@ -9,8 +9,8 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum FollowError implements ErrorCode {
 
-    ALREADY_FOLLOWING(HttpStatus.BAD_REQUEST, "Already following."),
-    NOT_FOLLOWING(HttpStatus.BAD_REQUEST, "Not following.");
+    ALREADY_FOLLOWING(HttpStatus.BAD_REQUEST, "already following."),
+    NOT_FOLLOWING(HttpStatus.BAD_REQUEST, "not following.");
 
     private final HttpStatus httpStatus;
     private final String message;

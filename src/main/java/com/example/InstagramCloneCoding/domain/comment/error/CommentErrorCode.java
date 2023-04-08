@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum CommentErrorCode implements ErrorCode {
 
-    COMMENT_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "comment not found"),
+    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "comment not found"),
     UNAVAILABLE_COMMENT_REQUEST(HttpStatus.BAD_REQUEST, "unavailable comment request"),
     ;
 
