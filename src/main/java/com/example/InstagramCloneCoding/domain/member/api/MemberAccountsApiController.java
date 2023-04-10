@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -46,6 +47,15 @@ public class MemberAccountsApiController {
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(profileResponseDto);
+    }
+
+    @GetMapping("search/{member_id}")
+    public ResponseEntity<List<MemberResponseDto>> search(@Parameter(hidden = true) @LoggedInUser Member member,
+                                                          @PathVariable(name = "member_id") String targetId) {
+        List<MemberResponseDto> members = memberService.search(targetId);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(members);
     }
 
     @DeleteMapping("delete")

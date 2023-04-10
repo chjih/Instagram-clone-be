@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.example.InstagramCloneCoding.domain.member.error.MemberErrorCode.*;
 
@@ -109,6 +110,14 @@ public class MemberService {
         return memberMapper.toProfileResponse(target, member);
     }
 
+    public List<MemberResponseDto> search(String idOrName) {
+        List<Member> members = memberRepository.findByUserIdOrName(idOrName, idOrName);
+
+        return members.stream()
+                .map(memberMapper::toMemberResponseDto)
+                .collect(Collectors.toList());
+    }
+
     public void deleteAccount(Member member, String password) {
         // 비밀번호 확인
         if (!passwordEncoder.matches(password, member.getPassword()))
@@ -120,16 +129,15 @@ public class MemberService {
 
         // 작성한 포스트의 이미지 삭제
         postRepository.findByAuthor(member).forEach(post ->
-            post.getPostImages().forEach(postImage ->
-                    awsS3Service.deleteFile(postImage.getPostImageId())));
+                post.getPostImages().forEach(postImage ->
+                        awsS3Service.deleteFile(postImage.getPostImageId())));
 
         // 작성한 댓글 삭제
         commentRepository.findByMember(member).forEach(comment -> {
             if (comment.getRefStep() == 0) {
                 List<Comment> comments = commentRepository.findByRef(comment.getRef());
                 comments.forEach(commentRepository::delete);
-            }
-            else {
+            } else {
                 commentRepository.delete(comment);
             }
         });
@@ -138,7 +146,7 @@ public class MemberService {
         memberRepository.delete(member);
     }
 
-    private void validateSignUpInfo(MemberRegisterDto memberRegisterDto){
+    private void validateSignUpInfo(MemberRegisterDto memberRegisterDto) {
         // 아이디 중복 확인
         memberRepository.findById(memberRegisterDto.getUserId())
                 .ifPresent(member -> {
