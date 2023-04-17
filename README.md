@@ -43,11 +43,11 @@
 - 로그인 및 회원가입
 - 게시글 CRUD
 - 댓글 CRUD
-- 좋아요
+- 댓글/게시글 좋아요
 - 팔로우 - 팔로잉
 - 프로필 보기
-- 검색 기능
-- 댓글 회원태그
+- 사용자 검색 기능
+- 메인화면 타임라인
 
 ## API 문서
 https://chjih.gitbook.io/instagram-clone-coding/
