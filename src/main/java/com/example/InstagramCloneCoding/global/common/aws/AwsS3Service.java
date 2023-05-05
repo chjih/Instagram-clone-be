@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.example.InstagramCloneCoding.domain.member.error.MemberErrorCode.IMAGE_UPLOAD_FAIL;
+import static com.example.InstagramCloneCoding.global.error.CommonErrorCode.ONLY_IMAGE_ALLOWED;
 
 @Service
 @Transactional
@@ -32,6 +33,7 @@ public class AwsS3Service {
         List<String> fileNameList = new ArrayList<>();
 
         multipartFiles.forEach(file -> {
+            validateContentType(file);
             String s3FileName = UUID.randomUUID().toString(); // 이름 중복 피하기
 
             try {
@@ -57,5 +59,14 @@ public class AwsS3Service {
 
     public void deleteFile(String fileName) {
         amazonS3.deleteObject(new DeleteObjectRequest(bucket, fileName.substring(59)));
+    }
+
+    // 파일 확장자 검사 (jpg, png 만 가능)
+    private void validateContentType(MultipartFile multipartFile) {
+        String contentType = multipartFile.getContentType();
+        System.out.println(contentType);
+        if (contentType == null || (!contentType.equals("image/jpeg") && !contentType.equals("image/png"))) {
+            throw new RestApiException(ONLY_IMAGE_ALLOWED);
+        }
     }
 }
