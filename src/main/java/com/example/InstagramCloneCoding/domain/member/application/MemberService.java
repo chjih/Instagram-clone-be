@@ -111,7 +111,7 @@ public class MemberService {
     }
 
     public List<MemberResponseDto> search(String idOrName) {
-        List<Member> members = memberRepository.findByUserIdOrName(idOrName, idOrName);
+        List<Member> members = memberRepository.findByUserIdContainsOrNameContains(idOrName, idOrName);
 
         return members.stream()
                 .map(memberMapper::toMemberResponseDto)
