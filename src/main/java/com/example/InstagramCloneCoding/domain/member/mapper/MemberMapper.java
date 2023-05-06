@@ -26,6 +26,7 @@ public class MemberMapper {
                 .name(entity.getName())
                 .profileImage(entity.getProfileImage())
                 .introduction(entity.getIntroduction())
+                .postCount(entity.getPosts().size())
                 .followerCount(entity.getFollowers().size())
                 .followingCount(entity.getFollowings().size())
                 .iFollowed(iFollowed)

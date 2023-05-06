@@ -15,6 +15,8 @@ public class ProfileResponseDto {
 
     private String introduction;
 
+    private int postCount;
+
     private int followerCount;
 
     private int followingCount;
@@ -25,11 +27,12 @@ public class ProfileResponseDto {
 
     @Builder
     public ProfileResponseDto(String userId, String name, String profileImage, String introduction,
-                              int followerCount, int followingCount, boolean iFollowed, boolean isMe) {
+                              int postCount, int followerCount, int followingCount, boolean iFollowed, boolean isMe) {
         this.userId = userId;
         this.name = name;
         this.profileImage = profileImage;
         this.introduction = introduction;
+        this.postCount = postCount;
         this.followerCount = followerCount;
         this.followingCount = followingCount;
         this.iFollowed = iFollowed;
