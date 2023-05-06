@@ -50,7 +50,7 @@ public class PostFindService {
     public List<PostResponseDto> getHomePosts(Member member) {
         List<Post> posts = postRepository.findByAuthorInAndCreatedAtGreaterThanEqual(
                 followRepository.findFollowingsById(member.getUserId()),
-                member.getLastHomeAccessTime());
+                member.getLastHomeAccessTime().minusDays(1));
 
         member.setLastHomeAccessTime(LocalDateTime.now());
 
