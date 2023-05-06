@@ -48,7 +48,7 @@ public class PostFindService {
     }
 
     public List<PostResponseDto> getHomePosts(Member member) {
-        List<Post> posts = postRepository.findByAuthorInAndCreatedAtGreaterThanEqual(
+        List<Post> posts = postRepository.findByAuthorInAndCreatedAtGreaterThanEqualOrderByCreatedAtDesc(
                 followRepository.findFollowingsById(member.getUserId()),
                 member.getLastHomeAccessTime().minusDays(1));
 
