@@ -19,10 +19,6 @@
 - [서다빈](https://github.com/seoseoseodabin)
 - [천지홍](https://github.com/chjih)
 
-`Front-End`
-- [정시연](https://github.com/chj0220)
-- [최현준](https://github.com/siyeon117)
-
 ## 기술 스택
 - Back-end
   - `Java 11`
@@ -33,11 +29,6 @@
   - `AWS-S3`
   - `AWS-CodeDeploy`
   - `Swagger`
-  
-- Front-end
-  - `HTML`
-  - `CSS`
-  - `Javascript`
 
 ## 주요 기능
 - 로그인 및 회원가입
@@ -51,5 +42,3 @@
 
 ## API 문서
 https://chjih.gitbook.io/instagram-clone-coding/
-
-## 실행 영상(추후 업데이트 예정)
